@@ -1,0 +1,606 @@
+EESchema Schematic File Version 2
+LIBS:kemet
+LIBS:multicomp
+LIBS:power
+LIBS:usevolt
+LIBS:wurth_elektronik_LED
+EELAYER 26 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 12
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L 100nF C307
+U 1 1 57E685B4
+P 5000 4200
+F 0 "C307" V 5008 4273 45  0000 L CNN
+F 1 "100nF" V 5092 4273 45  0000 L CNN
+F 2 "kemet:0603" H 5030 4350 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 4904 4209 60  0001 C CNN
+F 4 "1288255" H 5304 4609 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 5104 4409 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 5204 4509 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 5004 4309 60  0001 C CNN "Manufacturer"
+	1    5000 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L 100nF C306
+U 1 1 57E68621
+P 4650 4200
+F 0 "C306" V 4658 4273 45  0000 L CNN
+F 1 "100nF" V 4742 4273 45  0000 L CNN
+F 2 "kemet:0603" H 4680 4350 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 4554 4209 60  0001 C CNN
+F 4 "1288255" H 4954 4609 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 4754 4409 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 4854 4509 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 4654 4309 60  0001 C CNN "Manufacturer"
+	1    4650 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L 100nF C305
+U 1 1 57E68672
+P 4300 4200
+F 0 "C305" V 4308 4273 45  0000 L CNN
+F 1 "100nF" V 4392 4273 45  0000 L CNN
+F 2 "kemet:0603" H 4330 4350 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 4204 4209 60  0001 C CNN
+F 4 "1288255" H 4604 4609 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 4404 4409 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 4504 4509 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 4304 4309 60  0001 C CNN "Manufacturer"
+	1    4300 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L 100nF C304
+U 1 1 57E686C7
+P 3950 4200
+F 0 "C304" V 3958 4273 45  0000 L CNN
+F 1 "100nF" V 4042 4273 45  0000 L CNN
+F 2 "kemet:0603" H 3980 4350 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 3854 4209 60  0001 C CNN
+F 4 "1288255" H 4254 4609 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 4054 4409 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 4154 4509 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 3954 4309 60  0001 C CNN "Manufacturer"
+	1    3950 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L 100nF C303
+U 1 1 57E6871C
+P 3600 4200
+F 0 "C303" V 3608 4273 45  0000 L CNN
+F 1 "100nF" V 3692 4273 45  0000 L CNN
+F 2 "kemet:0603" H 3630 4350 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 3504 4209 60  0001 C CNN
+F 4 "1288255" H 3904 4609 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 3704 4409 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 3804 4509 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 3604 4309 60  0001 C CNN "Manufacturer"
+	1    3600 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L +3V3 #PWR303
+U 1 1 57E689A3
+P 3600 3950
+F 0 "#PWR303" H 3600 3800 50  0001 C CNN
+F 1 "+3V3" H 3615 4123 50  0000 C CNN
+F 2 "" H 3600 3950 50  0000 C CNN
+F 3 "" H 3600 3950 50  0000 C CNN
+	1    3600 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR304
+U 1 1 57E689C9
+P 3600 4550
+F 0 "#PWR304" H 3600 4300 50  0001 C CNN
+F 1 "GND" H 3605 4377 50  0000 C CNN
+F 2 "" H 3600 4550 50  0000 C CNN
+F 3 "" H 3600 4550 50  0000 C CNN
+	1    3600 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L XTAL_7A-12.000MAAJ-T X301
+U 1 1 57E6956F
+P 7250 2950
+F 0 "X301" V 7158 3048 45  0000 L CNN
+F 1 "XTAL_7A-12.000MAAJ-T" V 7450 2800 45  0000 L CNN
+F 2 "usevolt:XTAL_7A-20.000MAJ" H 7280 3100 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1041607.pdf?_ga=1.226282842.1948984246.1460023966" H 7270 2970 60  0001 C CNN
+F 4 "1841940" H 7670 3370 60  0001 C CNN "1st Source Part Number"
+F 5 "7A-12.000MAAJ-T" H 7470 3170 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 7570 3270 60  0001 C CNN "1st Source"
+F 7 "TXC" H 7370 3070 60  0001 C CNN "Manufacturer"
+	1    7250 2950
+	0    1    1    0   
+$EndComp
+$Comp
+L 18pF C308
+U 1 1 57E695FA
+P 7550 2750
+F 0 "C308" H 7500 2700 45  0000 C CNN
+F 1 "18pF" H 7700 2700 45  0000 C CNN
+F 2 "kemet:0603" H 7580 2900 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2111569.pdf?_ga=1.260538573.1948984246.1460023966" H 7454 2759 60  0001 C CNN
+F 4 "1865514" H 7854 3159 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C180J2GACTU" H 7654 2959 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 7754 3059 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 7554 2859 60  0001 C CNN "Manufacturer"
+	1    7550 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L 18pF C309
+U 1 1 57E69648
+P 7550 3050
+F 0 "C309" H 7500 3100 45  0000 C CNN
+F 1 "18pF" H 7700 3100 45  0000 C CNN
+F 2 "kemet:0603" H 7580 3200 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2111569.pdf?_ga=1.260538573.1948984246.1460023966" H 7454 3059 60  0001 C CNN
+F 4 "1865514" H 7854 3459 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C180J2GACTU" H 7654 3259 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 7754 3359 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 7554 3159 60  0001 C CNN "Manufacturer"
+	1    7550 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR306
+U 1 1 57E697A1
+P 8000 3100
+F 0 "#PWR306" H 8000 2850 50  0001 C CNN
+F 1 "GND" H 8005 2927 50  0000 C CNN
+F 2 "" H 8000 3100 50  0000 C CNN
+F 3 "" H 8000 3100 50  0000 C CNN
+	1    8000 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR305
+U 1 1 57E69A8B
+P 7300 3600
+F 0 "#PWR305" H 7300 3350 50  0001 C CNN
+F 1 "GND" H 7305 3427 50  0000 C CNN
+F 2 "" H 7300 3600 50  0000 C CNN
+F 3 "" H 7300 3600 50  0000 C CNN
+	1    7300 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR307
+U 1 1 5891FBFB
+P 9700 4600
+F 0 "#PWR307" H 9700 4350 50  0001 C CNN
+F 1 "GND" H 9705 4427 50  0000 C CNN
+F 2 "" H 9700 4600 50  0000 C CNN
+F 3 "" H 9700 4600 50  0000 C CNN
+	1    9700 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR308
+U 1 1 5891FCDE
+P 9750 3550
+F 0 "#PWR308" H 9750 3400 50  0001 C CNN
+F 1 "+3V3" H 9765 3723 50  0000 C CNN
+F 2 "" H 9750 3550 50  0000 C CNN
+F 3 "" H 9750 3550 50  0000 C CNN
+	1    9750 3550
+	1    0    0    -1  
+$EndComp
+Text Label 9350 4550 0    60   ~ 0
+RESET
+Text Label 4800 1950 0    60   ~ 0
+RESET
+$Comp
+L 10K R301
+U 1 1 589226EB
+P 9250 3650
+F 0 "R301" V 9258 3708 45  0000 L CNN
+F 1 "10K" V 9342 3708 45  0000 L CNN
+F 2 "multicomp:0603" H 9280 3800 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 9219 3689 60  0001 C CNN
+F 4 "9330399" H 9619 4089 60  0001 C CNN "1st Source Part Number"
+F 5 "Farnell" H 9519 3989 60  0001 C CNN "1st Source"
+F 6 "MC0063W0603110K" H 9419 3889 60  0001 C CNN "Manufacturer Part Number"
+F 7 "MULTICOMP" H 9319 3789 60  0001 C CNN "Manufacturer"
+	1    9250 3650
+	0    1    1    0   
+$EndComp
+$Comp
+L 10K R302
+U 1 1 58922760
+P 9500 3700
+F 0 "R302" V 9508 3758 45  0000 L CNN
+F 1 "10K" V 9592 3758 45  0000 L CNN
+F 2 "multicomp:0603" H 9530 3850 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 9469 3739 60  0001 C CNN
+F 4 "9330399" H 9869 4139 60  0001 C CNN "1st Source Part Number"
+F 5 "Farnell" H 9769 4039 60  0001 C CNN "1st Source"
+F 6 "MC0063W0603110K" H 9669 3939 60  0001 C CNN "Manufacturer Part Number"
+F 7 "MULTICOMP" H 9569 3839 60  0001 C CNN "Manufacturer"
+	1    9500 3700
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5000 4400 5000 4900
+Wire Wire Line
+	5000 4500 5200 4500
+Wire Wire Line
+	5200 4400 5100 4400
+Wire Wire Line
+	5100 4400 5100 4500
+Connection ~ 5100 4500
+Wire Wire Line
+	3250 4100 5200 4100
+Connection ~ 5000 4100
+Connection ~ 4650 4100
+Connection ~ 4300 4100
+Connection ~ 3950 4100
+Wire Wire Line
+	3250 4400 5000 4400
+Connection ~ 3950 4400
+Connection ~ 4300 4400
+Connection ~ 4650 4400
+Wire Wire Line
+	5000 4600 5200 4600
+Connection ~ 5000 4500
+Wire Wire Line
+	5000 4700 5200 4700
+Connection ~ 5000 4600
+Wire Wire Line
+	5000 4800 5200 4800
+Connection ~ 5000 4700
+Wire Wire Line
+	5000 4900 5200 4900
+Connection ~ 5000 4800
+Wire Wire Line
+	5000 4000 5200 4000
+Wire Wire Line
+	5000 3900 5200 3900
+Connection ~ 5000 4000
+Wire Wire Line
+	5000 3800 5200 3800
+Connection ~ 5000 3900
+Wire Wire Line
+	5000 3700 5200 3700
+Connection ~ 5000 3800
+Wire Wire Line
+	3600 4550 3600 4400
+Wire Wire Line
+	3600 4100 3600 3950
+Wire Wire Line
+	5200 3450 5000 3450
+Connection ~ 5000 3700
+Wire Wire Line
+	5200 3550 5000 3550
+Connection ~ 5000 3550
+Wire Wire Line
+	5000 3450 5000 4100
+Wire Wire Line
+	7100 3050 7450 3050
+Wire Wire Line
+	7100 3050 7100 2950
+Wire Wire Line
+	7100 2950 7000 2950
+Connection ~ 7250 3050
+Wire Wire Line
+	7000 2850 7100 2850
+Wire Wire Line
+	7100 2850 7100 2750
+Wire Wire Line
+	7100 2750 7450 2750
+Connection ~ 7250 2750
+Wire Wire Line
+	7750 2750 8000 2750
+Wire Wire Line
+	8000 2750 8000 3100
+Wire Wire Line
+	8000 3050 7750 3050
+Connection ~ 8000 3050
+Wire Wire Line
+	7300 3600 7300 3500
+Wire Wire Line
+	7300 3500 7000 3500
+Wire Wire Line
+	7000 5250 7600 5250
+Wire Wire Line
+	7600 5150 7000 5150
+Wire Wire Line
+	7000 3350 9150 3350
+Wire Wire Line
+	9150 3350 9150 4050
+Wire Wire Line
+	9150 4050 9850 4050
+Wire Wire Line
+	7000 3850 9850 3850
+Wire Wire Line
+	9700 3950 9700 4600
+Wire Wire Line
+	9700 4150 9850 4150
+Wire Wire Line
+	9700 3950 9850 3950
+Connection ~ 9700 4150
+Wire Wire Line
+	9750 3550 9750 3750
+Wire Wire Line
+	9750 3750 9850 3750
+Wire Wire Line
+	9850 4550 9350 4550
+Wire Wire Line
+	5200 1950 4800 1950
+Connection ~ 9250 3850
+Wire Wire Line
+	9500 3900 9500 4050
+Connection ~ 9500 4050
+Wire Wire Line
+	9250 3550 9750 3550
+Wire Wire Line
+	9500 3600 9500 3550
+Connection ~ 9500 3550
+Connection ~ 9750 3550
+$Comp
+L +5V #PWR301
+U 1 1 58C01582
+P 10700 5700
+F 0 "#PWR301" H 10700 5550 50  0001 C CNN
+F 1 "+5V" H 10715 5873 50  0000 C CNN
+F 2 "" H 10700 5700 50  0000 C CNN
+F 3 "" H 10700 5700 50  0000 C CNN
+	1    10700 5700
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR302
+U 1 1 58C01588
+P 10700 6250
+F 0 "#PWR302" H 10700 6000 50  0001 C CNN
+F 1 "GND" H 10705 6077 50  0000 C CNN
+F 2 "" H 10700 6250 50  0000 C CNN
+F 3 "" H 10700 6250 50  0000 C CNN
+	1    10700 6250
+	1    0    0    -1  
+$EndComp
+$Comp
+L 100nF C?
+U 1 1 58C01592
+P 10800 5900
+AR Path="/58C01592" Ref="C?"  Part="1" 
+AR Path="/57E682A9/58C01592" Ref="C301"  Part="1" 
+AR Path="/5953E91C/58C01592" Ref="C301"  Part="1" 
+F 0 "C301" V 10808 5973 45  0000 L CNN
+F 1 "100nF" V 10892 5973 45  0000 L CNN
+F 2 "kemet:0603" H 10830 6050 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 10704 5909 60  0001 C CNN
+F 4 "1288255" H 11104 6309 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 10904 6109 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 11004 6209 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 10804 6009 60  0001 C CNN "Manufacturer"
+	1    10800 5900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	10700 5700 10700 5800
+Wire Wire Line
+	10200 6100 10800 6100
+Wire Wire Line
+	10700 6100 10700 6250
+Connection ~ 10700 6100
+Wire Wire Line
+	10200 5800 10800 5800
+Connection ~ 10700 5800
+Wire Wire Line
+	9500 6100 8750 6100
+Wire Wire Line
+	9500 6000 8750 6000
+Wire Wire Line
+	10150 5450 9350 5450
+Text HLabel 10150 5350 2    60   Input ~ 0
+CANL
+Text HLabel 10150 5450 2    60   Input ~ 0
+CANH
+Text Label 8750 6100 0    60   ~ 0
+CAN_RX
+Text Label 8750 6000 0    60   ~ 0
+CAN_TX
+Text Label 7600 5250 2    60   ~ 0
+CAN_TX
+Text Label 7600 5150 2    60   ~ 0
+CAN_RX
+Wire Wire Line
+	10150 5350 9250 5350
+$Comp
+L 100nF C302
+U 1 1 58D0A5A6
+P 3250 4200
+F 0 "C302" V 3258 4273 45  0000 L CNN
+F 1 "100nF" V 3342 4273 45  0000 L CNN
+F 2 "kemet:0603" H 3280 4350 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2062872.pdf?_ga=1.250530118.1948984246.1460023966" H 3154 4209 60  0001 C CNN
+F 4 "1288255" H 3554 4609 60  0001 C CNN "1st Source Part Number"
+F 5 "C0603C104K5RACTU" H 3354 4409 60  0001 C CNN "Manufacturer Part Number"
+F 6 "Farnell" H 3454 4509 60  0001 C CNN "1st Source"
+F 7 "KEMET" H 3254 4309 60  0001 C CNN "Manufacturer"
+	1    3250 4200
+	0    1    1    0   
+$EndComp
+Connection ~ 3600 4400
+Connection ~ 3600 4100
+$Comp
+L LPC1549JBD64 U302
+U 1 1 5946DE63
+P 5700 2750
+F 0 "U302" H 6100 3826 45  0000 C CNN
+F 1 "LPC1549JBD64" H 5700 2750 45  0001 L BNN
+F 2 "usevolt:QFP64" H 5730 2900 20  0001 C CNN
+F 3 "http://www.nxp.com/documents/data_sheet/LPC15XX.pdf" H 5310 3670 60  0001 C CNN
+F 4 "2400142" H 5910 4270 60  0001 C CNN "2nd Source Part Number"
+F 5 "Farnell" H 5810 4170 60  0001 C CNN "2nd Source"
+F 6 "568-11350-ND" H 5710 4070 60  0001 C CNN "1st Source Part Number"
+F 7 "Digi-Key" H 5610 3970 60  0001 C CNN "1st Source"
+F 8 "LPC1549JBD64E" H 6100 3731 60  0000 C CNN "Manufacturer Part Number"
+F 9 "NXP" H 5410 3770 60  0001 C CNN "Manufacturer"
+	1    5700 2750
+	1    0    0    -1  
+$EndComp
+Connection ~ 5000 4400
+$Comp
+L ARM_JTAG_SWD_HEADER_10_PINSMD J301
+U 1 1 5953ECE3
+P 9950 4050
+F 0 "J301" H 10477 3992 45  0000 L CNN
+F 1 "ARM_JTAG_SWD_HEADER_10_PINSMD" H 10477 3908 45  0000 L CNN
+F 2 "usevolt:ARM_10_PIN_JTAG_SWD_CONNECTOR" H 9980 4200 20  0001 C CNN
+F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/20021121.pdf" H 9950 4490 60  0001 C CNN
+F 4 "20021121-00010C4LF" H 10150 4690 60  0001 C CNN "Manufacturer Part Number"
+F 5 "609-3695-1-ND" H 10350 4890 60  0001 C CNN "1st Source Part Number"
+F 6 "Amphenol FCI" H 10050 4590 60  0001 C CNN "Manufacturer"
+F 7 "Digikey" H 10250 4790 60  0001 C CNN "1st Source"
+	1    9950 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L MCP2551_SOIC8 U?
+U 1 1 5953EADD
+P 9900 5900
+F 0 "U?" H 9950 6204 45  0000 C CNN
+F 1 "MCP2551_SOIC8" H 9950 6120 45  0000 C CNN
+F 2 "usevolt:SOIC8" H 9780 6050 20  0001 C CNN
+F 3 "http://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en011797" H 9500 6350 60  0001 C CNN
+F 4 "9758569" H 10500 6720 60  0001 C CNN "2nd Source Part Number"
+F 5 "Digi-Key" H 10200 6420 60  0001 C CNN "1st Source"
+F 6 "Farnell" H 10400 6620 60  0001 C CNN "2nd Source"
+F 7 "MCP2551-I/SN" H 10100 6320 60  0001 C CNN "Manufacturer Part Number"
+F 8 "MCP2551-I/SN-ND" H 10300 6520 60  0001 C CNN "1st Source Part Number"
+F 9 "MICROCHIP" H 10050 6200 60  0001 C CNN "Manufacturer"
+	1    9900 5900
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 5450 9350 5800
+Wire Wire Line
+	9350 5800 9500 5800
+Wire Wire Line
+	9500 5900 9250 5900
+Wire Wire Line
+	9250 5900 9250 5350
+Wire Wire Line
+	10200 6000 10350 6000
+Wire Wire Line
+	10350 6000 10350 6100
+Connection ~ 10350 6100
+$Comp
+L 10K R?
+U 1 1 5957A035
+P 7200 5750
+F 0 "R?" H 7250 5934 45  0000 C CNN
+F 1 "10K" H 7250 5850 45  0000 C CNN
+F 2 "multicomp:0603" H 7230 5900 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 7169 5789 60  0001 C CNN
+F 4 "9330399" H 7569 6189 60  0001 C CNN "1st Source Part Number"
+F 5 "Farnell" H 7469 6089 60  0001 C CNN "1st Source"
+F 6 "MC0063W0603110K" H 7369 5989 60  0001 C CNN "Manufacturer Part Number"
+F 7 "MULTICOMP" H 7269 5889 60  0001 C CNN "Manufacturer"
+	1    7200 5750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7100 5750 7000 5750
+Wire Wire Line
+	7400 5750 7950 5750
+Text HLabel 7950 5750 2    60   Input ~ 0
+WIPER_POS
+$Comp
+L 10K R?
+U 1 1 5957B1E8
+P 7450 5650
+F 0 "R?" H 7500 5834 45  0000 C CNN
+F 1 "10K" H 7500 5750 45  0000 C CNN
+F 2 "multicomp:0603" H 7480 5800 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 7419 5689 60  0001 C CNN
+F 4 "9330399" H 7819 6089 60  0001 C CNN "1st Source Part Number"
+F 5 "Farnell" H 7719 5989 60  0001 C CNN "1st Source"
+F 6 "MC0063W0603110K" H 7619 5889 60  0001 C CNN "Manufacturer Part Number"
+F 7 "MULTICOMP" H 7519 5789 60  0001 C CNN "Manufacturer"
+	1    7450 5650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7350 5650 7000 5650
+Wire Wire Line
+	7650 5650 7950 5650
+Text HLabel 7950 5650 2    60   Input ~ 0
+COOLER_P
+Wire Wire Line
+	7000 5550 7950 5550
+Wire Wire Line
+	7000 5450 7950 5450
+Text HLabel 7950 5450 2    60   Output ~ 0
+DRIVE
+Text HLabel 7950 5550 2    60   Output ~ 0
+WORK
+Wire Wire Line
+	7000 4950 7950 4950
+Text HLabel 7950 4950 2    60   Output ~ 0
+IN
+Wire Wire Line
+	7000 4850 7950 4850
+Text HLabel 7950 4850 2    60   Output ~ 0
+BACK
+Wire Wire Line
+	7000 4750 7950 4750
+Text HLabel 7950 4750 2    60   Output ~ 0
+BEACON
+Wire Wire Line
+	7000 4550 7950 4550
+Text HLabel 7950 4550 2    60   Output ~ 0
+WIPER
+Wire Wire Line
+	7000 3950 7950 3950
+Text HLabel 7950 3950 2    60   Output ~ 0
+COOLER
+Wire Wire Line
+	5200 3250 4550 3250
+Wire Wire Line
+	5200 3150 4550 3150
+Wire Wire Line
+	5200 3050 4550 3050
+Wire Wire Line
+	5200 2950 4550 2950
+Wire Wire Line
+	5200 2850 4550 2850
+Wire Wire Line
+	5200 2750 4550 2750
+Wire Wire Line
+	5200 2650 4550 2650
+Text HLabel 4550 2650 0    60   Input ~ 0
+WORK_SENSE
+Text HLabel 4550 2750 0    60   Input ~ 0
+DRIVE_SENSE
+Text HLabel 4550 2850 0    60   Input ~ 0
+IN_SENSE
+Text HLabel 4550 2950 0    60   Input ~ 0
+BEACON_SENSE
+Text HLabel 4550 3050 0    60   Input ~ 0
+BACK_SENSE
+Text HLabel 4550 3150 0    60   Input ~ 0
+WIPER_SENSE
+Text HLabel 4550 3250 0    60   Input ~ 0
+COOLER_SENSE
+$EndSCHEMATC
