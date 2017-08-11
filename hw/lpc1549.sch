@@ -537,24 +537,24 @@ Wire Wire Line
 Wire Wire Line
 	4600 2950 3650 2950
 Text HLabel 3650 2950 0    60   Output ~ 0
-DRIVE
-Text HLabel 3650 2750 0    60   Output ~ 0
+BEACON
+Text HLabel 3650 2650 0    60   Output ~ 0
 WORK
 Wire Wire Line
 	6400 2050 7350 2050
-Text HLabel 7350 2050 2    60   Output ~ 0
+Text HLabel 7350 2250 2    60   Output ~ 0
 IN
 Wire Wire Line
 	4600 2650 3650 2650
-Text HLabel 3650 2650 0    60   Output ~ 0
+Text HLabel 3650 2750 0    60   Output ~ 0
 BACK
 Wire Wire Line
 	4600 2850 3650 2850
 Text HLabel 3650 2850 0    60   Output ~ 0
-BEACON
+DRIVE
 Wire Wire Line
 	6400 2250 7350 2250
-Text HLabel 7350 2250 2    60   Output ~ 0
+Text HLabel 7350 2050 2    60   Output ~ 0
 WIPER
 Wire Wire Line
 	6400 2350 7350 2350
@@ -574,17 +574,17 @@ Wire Wire Line
 	4600 2250 3950 2250
 Wire Wire Line
 	4600 2050 3950 2050
-Text HLabel 3950 2050 0    60   Input ~ 0
-WORK_SENSE
-Text HLabel 3950 2250 0    60   Input ~ 0
-DRIVE_SENSE
-Text HLabel 7050 1850 2    60   Input ~ 0
-IN_SENSE
-Text HLabel 3950 2350 0    60   Input ~ 0
-BEACON_SENSE
 Text HLabel 3950 2150 0    60   Input ~ 0
-BACK_SENSE
+WORK_SENSE
+Text HLabel 3950 2350 0    60   Input ~ 0
+DRIVE_SENSE
 Text HLabel 7050 1950 2    60   Input ~ 0
+IN_SENSE
+Text HLabel 3950 2250 0    60   Input ~ 0
+BEACON_SENSE
+Text HLabel 3950 2050 0    60   Input ~ 0
+BACK_SENSE
+Text HLabel 7050 1850 2    60   Input ~ 0
 WIPER_SENSE
 Text HLabel 3950 5650 0    60   Input ~ 0
 COOLER_SENSE

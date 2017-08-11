@@ -41,4 +41,5 @@ release/./src/messages.o: src/messages.c inc/main.h \
  hal/uv_hal/inc/canopen/canopen_obj_dict.h hal/uv_hal/inc/uv_filters.h \
  hal/uv_hal/inc/uv_adc.h inc/messages.h hal/uv_hal/inc/uv_reset.h \
  hal/uv_hal/inc/uv_terminal.h hal/uv_hal/inc/uv_stdout.h \
- hal/uv_hal/inc/uv_canopen.h hal/uv_hal/inc/uv_timer.h
+ hal/uv_hal/inc/uv_canopen.h inc/pin_mappings.h hal/uv_hal/inc/uv_gpio.h \
+ hal/uv_hal/inc/uv_timer.h

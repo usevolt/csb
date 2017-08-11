@@ -23,7 +23,14 @@ int obj_dict_len();
 
 /// @brief: Lists all gsm commands
 typedef enum {
-	CMD_COUNT
+	CMD_COUNT,
+	CMD_DRIVE_LIGHT,
+	CMD_WORK_LIGHT,
+	CMD_BACK_LIGHT,
+	CMD_IN_LIGHT,
+	CMD_BEACON,
+	CMD_WIPER,
+	CMD_COOLER
 } gsm_commands_e;
 
 
