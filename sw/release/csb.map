@@ -13333,7 +13333,6 @@ Discarded input sections
  .bss           0x00000000        0x0 release/./src/main.o
  .data.t_state_names
                 0x00000000        0xc release/./src/main.o
- .debug_macro   0x00000000      0x88c release/./src/main.o
  .debug_macro   0x00000000       0x22 release/./src/main.o
  .debug_macro   0x00000000       0x87 release/./src/main.o
  .debug_macro   0x00000000       0x44 release/./src/main.o
@@ -13927,7 +13926,7 @@ END GROUP
                 0x02009000                __top_RAM3 = 0x2009000
                 0x02003fe0                __user_stack_top = __top_RAM
 
-.text           0x00001000     0x4e64
+.text           0x00001000     0x4e6c
  FILL mask 0xff
                 0x00001000                __vectors_start__ = ABSOLUTE (.)
  *(.isr_vector)
@@ -13936,19 +13935,19 @@ END GROUP
                 0x000010fc                . = ALIGN (0x4)
                 0x000010fc                __section_table_start = .
                 0x000010fc                __data_section_table = .
-                0x000010fc        0x4 LONG 0x5e64 LOADADDR (.data)
+                0x000010fc        0x4 LONG 0x5e6c LOADADDR (.data)
                 0x00001100        0x4 LONG 0x2000000 ADDR (.data)
                 0x00001104        0x4 LONG 0xf4 SIZEOF (.data)
-                0x00001108        0x4 LONG 0x5e64 LOADADDR (.data_RAM2)
+                0x00001108        0x4 LONG 0x5e6c LOADADDR (.data_RAM2)
                 0x0000110c        0x4 LONG 0x2004000 ADDR (.data_RAM2)
                 0x00001110        0x4 LONG 0x0 SIZEOF (.data_RAM2)
-                0x00001114        0x4 LONG 0x5e64 LOADADDR (.data_RAM3)
+                0x00001114        0x4 LONG 0x5e6c LOADADDR (.data_RAM3)
                 0x00001118        0x4 LONG 0x2008000 ADDR (.data_RAM3)
                 0x0000111c        0x4 LONG 0x0 SIZEOF (.data_RAM3)
                 0x00001120                __data_section_table_end = .
                 0x00001120                __bss_section_table = .
                 0x00001120        0x4 LONG 0x20000f8 ADDR (.bss)
-                0x00001124        0x4 LONG 0x2fe0 SIZEOF (.bss)
+                0x00001124        0x4 LONG 0x2fdc SIZEOF (.bss)
                 0x00001128        0x4 LONG 0x2004000 ADDR (.bss_RAM2)
                 0x0000112c        0x4 LONG 0x0 SIZEOF (.bss_RAM2)
                 0x00001130        0x4 LONG 0x2008000 ADDR (.bss_RAM3)
@@ -14567,122 +14566,122 @@ END GROUP
                 0x00004de4       0x90 release/./src/main.o
                 0x00004de4                output_init
  .text.output_step
-                0x00004e74      0x124 release/./src/main.o
+                0x00004e74      0x104 release/./src/main.o
                 0x00004e74                output_step
  .text.wiper_set_speed
-                0x00004f98        0xc release/./src/main.o
-                0x00004f98                wiper_set_speed
- .text.init     0x00004fa4      0x160 release/./src/main.o
-                0x00004fa4                init
- .text.step     0x00005104       0x44 release/./src/main.o
-                0x00005104                step
- .text.main     0x00005148       0x34 release/./src/main.o
-                0x00005148                main
- .text.memcpy   0x0000517c        0x4 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(memcpy.o)
-                0x0000517c                memcpy
- .text.memset   0x00005180        0x4 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(memset.o)
-                0x00005180                memset
- .text.ch_val   0x00005184       0x30 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(scanf.o)
+                0x00004f78        0xc release/./src/main.o
+                0x00004f78                wiper_set_speed
+ .text.init     0x00004f84      0x160 release/./src/main.o
+                0x00004f84                init
+ .text.step     0x000050e4       0x80 release/./src/main.o
+                0x000050e4                step
+ .text.main     0x00005164       0x34 release/./src/main.o
+                0x00005164                main
+ .text.memcpy   0x00005198        0x4 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(memcpy.o)
+                0x00005198                memcpy
+ .text.memset   0x0000519c        0x4 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(memset.o)
+                0x0000519c                memset
+ .text.ch_val   0x000051a0       0x30 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(scanf.o)
  .text._strtoul
-                0x000051b4       0xbc /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(scanf.o)
- .text.strtol   0x00005270       0x7c /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(scanf.o)
-                0x00005270                strtol
- .text.strcmp   0x000052ec       0x44 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(strcmp.o)
-                0x000052ec                strcmp
+                0x000051d0       0xbc /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(scanf.o)
+ .text.strtol   0x0000528c       0x7c /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(scanf.o)
+                0x0000528c                strtol
+ .text.strcmp   0x00005308       0x44 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(strcmp.o)
+                0x00005308                strcmp
  .text.__aeabi_memcpy
-                0x00005330       0x34 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libcr_eabihelpers.a(memcpy.o)
-                0x00005330                __aeabi_memcpy
-                0x0000533a                __aeabi_memcpy4
-                0x0000533a                __aeabi_memcpy8
+                0x0000534c       0x34 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libcr_eabihelpers.a(memcpy.o)
+                0x0000534c                __aeabi_memcpy
+                0x00005356                __aeabi_memcpy4
+                0x00005356                __aeabi_memcpy8
  .text.__aeabi_memset_lowlevel
-                0x00005364       0x32 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libcr_eabihelpers.a(memcpy.o)
-                0x00005364                __aeabi_lowlevel_memset
+                0x00005380       0x32 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libcr_eabihelpers.a(memcpy.o)
+                0x00005380                __aeabi_lowlevel_memset
  *(.rodata .rodata.* .constdata .constdata.*)
- *fill*         0x00005396        0x2 ff
+ *fill*         0x000053b2        0x2 ff
  .rodata.str1.4
-                0x00005398        0x5 release/./hal/uv_hal/freertos/tasks.o
- *fill*         0x0000539d        0x3 ff
+                0x000053b4        0x5 release/./hal/uv_hal/freertos/tasks.o
+ *fill*         0x000053b9        0x3 ff
  .rodata.str1.4
-                0x000053a0       0x10 release/./hal/uv_hal/freertos/timers.o
+                0x000053bc       0x10 release/./hal/uv_hal/freertos/timers.o
  .rodata.str1.4
-                0x000053b0       0x27 release/./hal/uv_hal/src/uv_rtos.o
- *fill*         0x000053d7        0x1 ff
+                0x000053cc       0x27 release/./hal/uv_hal/src/uv_rtos.o
+ *fill*         0x000053f3        0x1 ff
  .rodata.str1.4
-                0x000053d8       0x2f release/./hal/uv_hal/src/uv_can.o
- *fill*         0x00005407        0x1 ff
+                0x000053f4       0x2f release/./hal/uv_hal/src/uv_can.o
+ *fill*         0x00005423        0x1 ff
  .rodata.RTCOscRateIn
-                0x00005408        0x4 release/./hal/uv_hal/src/cr_startup_lpc15xx.o
-                0x00005408                RTCOscRateIn
+                0x00005424        0x4 release/./hal/uv_hal/src/cr_startup_lpc15xx.o
+                0x00005424                RTCOscRateIn
  .rodata.OscRateIn
-                0x0000540c        0x4 release/./hal/uv_hal/src/cr_startup_lpc15xx.o
-                0x0000540c                OscRateIn
+                0x00005428        0x4 release/./hal/uv_hal/src/cr_startup_lpc15xx.o
+                0x00005428                OscRateIn
  .rodata.str1.4
-                0x00005410      0x396 release/./hal/uv_hal/src/uv_terminal.o
+                0x0000542c      0x396 release/./hal/uv_hal/src/uv_terminal.o
                                 0x39e (size before relaxing)
- *fill*         0x000057a6        0x2 ff
+ *fill*         0x000057c2        0x2 ff
  .rodata.common_cmds
-                0x000057a8       0x60 release/./hal/uv_hal/src/uv_terminal.o
-                0x000057a8                common_cmds
+                0x000057c4       0x60 release/./hal/uv_hal/src/uv_terminal.o
+                0x000057c4                common_cmds
  .rodata.com_params
-                0x00005808       0x78 release/./hal/uv_hal/src/canopen/canopen_obj_dict.o
-                0x00005808                com_params
+                0x00005824       0x78 release/./hal/uv_hal/src/canopen/canopen_obj_dict.o
+                0x00005824                com_params
  .rodata.rxpdo_com_defs
-                0x00005880        0x8 release/./hal/uv_hal/src/canopen/canopen_pdo.o
+                0x0000589c        0x8 release/./hal/uv_hal/src/canopen/canopen_pdo.o
  .rodata.txpdo_map_defs
-                0x00005888       0x20 release/./hal/uv_hal/src/canopen/canopen_pdo.o
+                0x000058a4       0x20 release/./hal/uv_hal/src/canopen/canopen_pdo.o
  .rodata.txpdo_com_defs
-                0x000058a8       0x14 release/./hal/uv_hal/src/canopen/canopen_pdo.o
+                0x000058c4       0x14 release/./hal/uv_hal/src/canopen/canopen_pdo.o
  .rodata.rxpdo_map_defs
-                0x000058bc       0x20 release/./hal/uv_hal/src/canopen/canopen_pdo.o
+                0x000058d8       0x20 release/./hal/uv_hal/src/canopen/canopen_pdo.o
  .rodata.str1.4
-                0x000058dc       0x6c release/./hal/uv_hal/src/uv_utilities.o
+                0x000058f8       0x6c release/./hal/uv_hal/src/uv_utilities.o
  .rodata.str1.4
-                0x00005948        0x7 release/./hal/uv_hal/src/printf.o
- *fill*         0x0000594f        0x1 ff
+                0x00005964        0x7 release/./hal/uv_hal/src/printf.o
+ *fill*         0x0000596b        0x1 ff
  .rodata.str1.4
-                0x00005950       0x44 release/./hal/uv_hal/src/uv_memory.o
+                0x0000596c       0x44 release/./hal/uv_hal/src/uv_memory.o
  .rodata.terminal_commands
-                0x00005994       0x70 release/./src/messages.o
-                0x00005994                terminal_commands
+                0x000059b0       0x70 release/./src/messages.o
+                0x000059b0                terminal_commands
  .rodata.str1.4
-                0x00005a04      0x2a2 release/./src/messages.o
- *fill*         0x00005ca6        0x2 ff
+                0x00005a20      0x2a2 release/./src/messages.o
+ *fill*         0x00005cc2        0x2 ff
  .rodata.str1.4
-                0x00005ca8       0x3c release/./src/main.o
-                                 0x39 (size before relaxing)
+                0x00005cc4       0x28 release/./src/main.o
+                                 0x25 (size before relaxing)
  .rodata.__ctype
-                0x00005ce4      0x180 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(ctype.o)
-                0x00005ce4                __ctype
-                0x00005e64                . = ALIGN (0x4)
+                0x00005cec      0x180 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(ctype.o)
+                0x00005cec                __ctype
+                0x00005e6c                . = ALIGN (0x4)
 
-.glue_7         0x00005e64        0x0
- .glue_7        0x00005e64        0x0 linker stubs
+.glue_7         0x00005e6c        0x0
+ .glue_7        0x00005e6c        0x0 linker stubs
 
-.glue_7t        0x00005e64        0x0
- .glue_7t       0x00005e64        0x0 linker stubs
+.glue_7t        0x00005e6c        0x0
+ .glue_7t       0x00005e6c        0x0 linker stubs
 
-.vfp11_veneer   0x00005e64        0x0
- .vfp11_veneer  0x00005e64        0x0 linker stubs
+.vfp11_veneer   0x00005e6c        0x0
+ .vfp11_veneer  0x00005e6c        0x0 linker stubs
 
-.v4_bx          0x00005e64        0x0
- .v4_bx         0x00005e64        0x0 linker stubs
+.v4_bx          0x00005e6c        0x0
+ .v4_bx         0x00005e6c        0x0 linker stubs
 
-.iplt           0x00005e64        0x0
- .iplt          0x00005e64        0x0 release/./hal/CMSIS_CORE_LPC177x_8x/src/system_LPC177x_8x.o
+.iplt           0x00005e6c        0x0
+ .iplt          0x00005e6c        0x0 release/./hal/CMSIS_CORE_LPC177x_8x/src/system_LPC177x_8x.o
 
-.rel.dyn        0x00005e64        0x0
- .rel.iplt      0x00005e64        0x0 release/./hal/CMSIS_CORE_LPC177x_8x/src/system_LPC177x_8x.o
+.rel.dyn        0x00005e6c        0x0
+ .rel.iplt      0x00005e6c        0x0 release/./hal/CMSIS_CORE_LPC177x_8x/src/system_LPC177x_8x.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00005e64                __exidx_start = .
+                0x00005e6c                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x00005e64                __exidx_end = .
-                0x00005e64                _etext = .
+                0x00005e6c                __exidx_end = .
+                0x00005e6c                _etext = .
 
-.data_RAM2      0x02004000        0x0 load address 0x00005e64
+.data_RAM2      0x02004000        0x0 load address 0x00005e6c
  FILL mask 0xff
                 [!provide]                PROVIDE (__start_data_RAM2, .)
  *(.ramfunc.$RAM2)
@@ -14692,7 +14691,7 @@ END GROUP
                 0x02004000                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__end_data_RAM2, .)
 
-.data_RAM3      0x02008000        0x0 load address 0x00005e64
+.data_RAM3      0x02008000        0x0 load address 0x00005e6c
  FILL mask 0xff
                 [!provide]                PROVIDE (__start_data_RAM3, .)
  *(.ramfunc.$RAM3)
@@ -14708,7 +14707,7 @@ END GROUP
                 0x02000000                . = ALIGN (0x4)
                 0x02000000                _end_uninit_RESERVED = .
 
-.data           0x02000000       0xf4 load address 0x00005e64
+.data           0x02000000       0xf4 load address 0x00005e6c
  FILL mask 0xff
                 0x02000000                _data = .
  *(vtable)
@@ -14731,7 +14730,7 @@ END GROUP
                 0x020000f4                . = ALIGN (0x4)
                 0x020000f4                _edata = .
 
-.igot.plt       0x020000f4        0x0 load address 0x00005f58
+.igot.plt       0x020000f4        0x0 load address 0x00005f60
  .igot.plt      0x020000f4        0x0 release/./hal/CMSIS_CORE_LPC177x_8x/src/system_LPC177x_8x.o
 
 .bss_RAM2       0x02004000        0x0
@@ -14748,7 +14747,7 @@ END GROUP
                 0x02008000                . = ALIGN ((. != 0x0)?0x4:0x1)
                 [!provide]                PROVIDE (__end_bss_RAM3, .)
 
-.bss            0x020000f8     0x2fe0
+.bss            0x020000f8     0x2fdc
                 0x020000f8                _bss = .
  *(.bss*)
  .bss.xNumOfOverflows
@@ -14825,23 +14824,21 @@ END GROUP
  *fill*         0x02002d5d        0x3 
  .bss.user_ptr  0x02002d60        0x4 release/./hal/uv_hal/src/uv_utilities.o
                 0x02002d60                user_ptr
- .bss.p.10544   0x02002d64        0x1 release/./src/main.o
- *fill*         0x02002d65        0x3 
- .bss.errno     0x02002d68        0x4 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(errno.o)
-                0x02002d68                errno
+ .bss.errno     0x02002d64        0x4 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7-m/libcr_c.a(errno.o)
+                0x02002d64                errno
  *(COMMON)
- COMMON         0x02002d6c       0x50 release/./hal/uv_hal/freertos/queue.o
-                0x02002d6c                xQueueRegistry
- COMMON         0x02002dbc       0x7c release/./hal/uv_hal/src/uv_canopen.o
-                0x02002dbc                _canopen
- COMMON         0x02002e38       0xf0 release/./hal/uv_hal/src/uv_terminal.o
-                0x02002e38                _terminal
- COMMON         0x02002f28        0x4 release/./hal/lpc_chip_15xx/src/chip_15xx.o
-                0x02002f28                SystemCoreClock
- COMMON         0x02002f2c      0x1ac release/./src/main.o
-                0x02002f2c                dev
-                0x020030d8                . = ALIGN (0x4)
-                0x020030d8                _ebss = .
+ COMMON         0x02002d68       0x50 release/./hal/uv_hal/freertos/queue.o
+                0x02002d68                xQueueRegistry
+ COMMON         0x02002db8       0x7c release/./hal/uv_hal/src/uv_canopen.o
+                0x02002db8                _canopen
+ COMMON         0x02002e34       0xf0 release/./hal/uv_hal/src/uv_terminal.o
+                0x02002e34                _terminal
+ COMMON         0x02002f24        0x4 release/./hal/lpc_chip_15xx/src/chip_15xx.o
+                0x02002f24                SystemCoreClock
+ COMMON         0x02002f28      0x1ac release/./src/main.o
+                0x02002f28                dev
+                0x020030d4                . = ALIGN (0x4)
+                0x020030d4                _ebss = .
                 [!provide]                PROVIDE (end, .)
 
 .noinit_RAM2    0x02004000        0x0
@@ -14854,17 +14851,17 @@ END GROUP
  *(.noinit.$Ram2_4*)
                 0x02008000                . = ALIGN (0x4)
 
-.noinit         0x020030d8        0x0
-                0x020030d8                _noinit = .
+.noinit         0x020030d4        0x0
+                0x020030d4                _noinit = .
  *(.noinit*)
-                0x020030d8                . = ALIGN (0x4)
-                0x020030d8                _end_noinit = .
-                0x020030d8                PROVIDE (_pvHeapStart, DEFINED (__user_heap_base)?__user_heap_base:.)
+                0x020030d4                . = ALIGN (0x4)
+                0x020030d4                _end_noinit = .
+                0x020030d4                PROVIDE (_pvHeapStart, DEFINED (__user_heap_base)?__user_heap_base:.)
                 0x02003fe0                PROVIDE (_vStackTop, DEFINED (__user_stack_top)?__user_stack_top:(__top_Ram0_16 - 0x0))
                 0xfdfe599e                PROVIDE (__valid_user_code_checksum, (0x0 - ((((((_vStackTop + (ResetISR + 0x1)) + (NMI_Handler + 0x1)) + (HardFault_Handler + 0x1)) + (DEFINED (MemManage_Handler)?MemManage_Handler:0x0 + 0x1)) + (DEFINED (BusFault_Handler)?BusFault_Handler:0x0 + 0x1)) + (DEFINED (UsageFault_Handler)?UsageFault_Handler:0x0 + 0x1))))
 OUTPUT(csb.axf elf32-littlearm)
 
-.debug_info     0x00000000    0x1aea4
+.debug_info     0x00000000    0x1af02
  .debug_info    0x00000000      0x456 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_info    0x00000456     0x2612 release/./hal/uv_hal/freertos/tasks.o
  .debug_info    0x00002a68      0x2eb release/./hal/uv_hal/freertos/list.o
@@ -14901,9 +14898,9 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_info    0x00017601      0xf11 release/./hal/lpc_chip_15xx/src/clock_15xx.o
  .debug_info    0x00018512      0x777 release/./hal/lpc_chip_15xx/src/sysctl_15xx.o
  .debug_info    0x00018c89      0xcb4 release/./src/messages.o
- .debug_info    0x0001993d     0x1567 release/./src/main.o
+ .debug_info    0x0001993d     0x15c5 release/./src/main.o
 
-.debug_abbrev   0x00000000     0x52ce
+.debug_abbrev   0x00000000     0x52bf
  .debug_abbrev  0x00000000      0x225 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_abbrev  0x00000225      0x343 release/./hal/uv_hal/freertos/tasks.o
  .debug_abbrev  0x00000568      0x10a release/./hal/uv_hal/freertos/list.o
@@ -14940,9 +14937,9 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_abbrev  0x000048d4      0x342 release/./hal/lpc_chip_15xx/src/clock_15xx.o
  .debug_abbrev  0x00004c16      0x14f release/./hal/lpc_chip_15xx/src/sysctl_15xx.o
  .debug_abbrev  0x00004d65      0x278 release/./src/messages.o
- .debug_abbrev  0x00004fdd      0x2f1 release/./src/main.o
+ .debug_abbrev  0x00004fdd      0x2e2 release/./src/main.o
 
-.debug_loc      0x00000000     0x91f5
+.debug_loc      0x00000000     0x91e9
  .debug_loc     0x00000000       0x87 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_loc     0x00000087     0x18ca release/./hal/uv_hal/freertos/tasks.o
  .debug_loc     0x00001951       0x65 release/./hal/uv_hal/freertos/list.o
@@ -14977,7 +14974,7 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_loc     0x00008112      0x46b release/./hal/lpc_chip_15xx/src/clock_15xx.o
  .debug_loc     0x0000857d      0x167 release/./hal/lpc_chip_15xx/src/sysctl_15xx.o
  .debug_loc     0x000086e4      0x499 release/./src/messages.o
- .debug_loc     0x00008b7d      0x678 release/./src/main.o
+ .debug_loc     0x00008b7d      0x66c release/./src/main.o
 
 .debug_aranges  0x00000000      0xe98
  .debug_aranges
@@ -15093,7 +15090,7 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_ranges  0x00000db0       0x50 release/./src/messages.o
  .debug_ranges  0x00000e00       0x38 release/./src/main.o
 
-.debug_macro    0x00000000     0xe8b9
+.debug_macro    0x00000000     0xf145
  .debug_macro   0x00000000      0x392 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_macro   0x00000392      0x174 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_macro   0x00000506       0x22 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
@@ -15241,8 +15238,9 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_macro   0x0000dd61      0x535 release/./src/messages.o
  .debug_macro   0x0000e296       0x64 release/./src/messages.o
  .debug_macro   0x0000e2fa      0x5bf release/./src/main.o
+ .debug_macro   0x0000e8b9      0x88c release/./src/main.o
 
-.debug_line     0x00000000    0x1208e
+.debug_line     0x00000000    0x120ad
  .debug_line    0x00000000      0x6c3 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_line    0x000006c3      0xf68 release/./hal/uv_hal/freertos/tasks.o
  .debug_line    0x0000162b      0x6de release/./hal/uv_hal/freertos/list.o
@@ -15279,9 +15277,9 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_line    0x000100fd      0x74b release/./hal/lpc_chip_15xx/src/clock_15xx.o
  .debug_line    0x00010848      0x57e release/./hal/lpc_chip_15xx/src/sysctl_15xx.o
  .debug_line    0x00010dc6      0x8b4 release/./src/messages.o
- .debug_line    0x0001167a      0xa14 release/./src/main.o
+ .debug_line    0x0001167a      0xa33 release/./src/main.o
 
-.debug_str      0x00000000    0x25661
+.debug_str      0x00000000    0x2568b
  .debug_str     0x00000000    0x1463f release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
                               0x148aa (size before relaxing)
  .debug_str     0x0001463f     0x4623 release/./hal/uv_hal/freertos/tasks.o
@@ -15354,8 +15352,8 @@ OUTPUT(csb.axf elf32-littlearm)
                               0x10af4 (size before relaxing)
  .debug_str     0x00024e18      0x2f4 release/./src/messages.o
                               0x17649 (size before relaxing)
- .debug_str     0x0002510c      0x555 release/./src/main.o
-                              0x1c3bd (size before relaxing)
+ .debug_str     0x0002510c      0x57f release/./src/main.o
+                              0x1c3b6 (size before relaxing)
 
 .comment        0x00000000       0xdc
  .comment       0x00000000       0x6e release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
@@ -15495,7 +15493,7 @@ OUTPUT(csb.axf elf32-littlearm)
  .ARM.attributes
                 0x00000891       0x21 /usr/local/lpcxpresso_8.2.2/lpcxpresso/tools/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7-m/libcr_eabihelpers.a(memcpy.o)
 
-.debug_frame    0x00000000     0x2434
+.debug_frame    0x00000000     0x2430
  .debug_frame   0x00000000       0xd0 release/./hal/uv_hal/freertos/portable/GCC/ARM_CM3/port.o
  .debug_frame   0x000000d0      0x5ac release/./hal/uv_hal/freertos/tasks.o
  .debug_frame   0x0000067c       0x6c release/./hal/uv_hal/freertos/list.o
@@ -15531,7 +15529,7 @@ OUTPUT(csb.axf elf32-littlearm)
  .debug_frame   0x0000203c      0x1dc release/./hal/lpc_chip_15xx/src/clock_15xx.o
  .debug_frame   0x00002218       0x88 release/./hal/lpc_chip_15xx/src/sysctl_15xx.o
  .debug_frame   0x000022a0       0xd8 release/./src/messages.o
- .debug_frame   0x00002378       0xbc release/./src/main.o
+ .debug_frame   0x00002378       0xb8 release/./src/main.o
 
 Cross Reference Table
 
@@ -16185,7 +16183,6 @@ pcQueueGetQueueName                               release/./hal/uv_hal/freertos/
 pcTimerGetTimerName                               release/./hal/uv_hal/freertos/timers.o
 print                                             release/./hal/uv_hal/src/printf.o
 printf                                            release/./hal/uv_hal/src/printf.o
-                                                  release/./src/main.o
                                                   release/./src/messages.o
                                                   release/./hal/uv_hal/src/uv_errors.o
                                                   release/./hal/uv_hal/src/uv_memory.o

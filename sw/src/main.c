@@ -57,13 +57,6 @@ void output_step(output_st *this, uint16_t step_ms) {
 		current = 0;
 	}
 
-	static uint8_t p = 0;
-	if (p++ == 100) {
-		printf("%i, %i mV, %i mA\n",  adc,
-				mv, current);
-		p = 0;
-	}
-
 	this->current = uv_moving_aver_step(&this->avg, current);
 
 
@@ -138,7 +131,7 @@ void init(dev_st* me) {
 			CSB_OUTPUT_STATE_OFF, WORK_LIGHT_IO, WORK_LIGHT_SENSE_CHN,
 			CSB_EMCY_WORK_LIGHT_OVERCURRENT);
 	output_init(&this->back_light, BACK_LIGHT_MAX_CURRENT_MA,
-			CSB_OUTPUT_STATE_ON, BACK_LIGHT_IO,BACK_LIGHT_SENSE_CHN,
+			CSB_OUTPUT_STATE_ON, BACK_LIGHT_IO, BACK_LIGHT_SENSE_CHN,
 			CSB_EMCY_BACK_LIGHT_OVERCURRENT);
 	output_init(&this->in_light, IN_LIGHT_MAX_CURRENT_MA,
 			CSB_OUTPUT_STATE_ON, IN_LIGHT_IO, IN_LIGHT_SENSE_CHN,
@@ -171,12 +164,12 @@ void step(void* me) {
 		uv_terminal_step();
 
 		output_step(&this->drive_light, step_ms);
-//		output_step(&this->work_light, step_ms);
-//		output_step(&this->back_light, step_ms);
-//		output_step(&this->in_light, step_ms);
-//		output_step(&this->beacon, step_ms);
-//		output_step(&this->wiper, step_ms);
-//		output_step(&this->cooler, step_ms);
+		output_step(&this->work_light, step_ms);
+		output_step(&this->back_light, step_ms);
+		output_step(&this->in_light, step_ms);
+		output_step(&this->beacon, step_ms);
+		output_step(&this->wiper, step_ms);
+		output_step(&this->cooler, step_ms);
 
 		this->total_current = this->drive_light.current +
 				this->work_light.current +

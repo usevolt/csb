@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/usevolt/uw/csb/hw/csb.sch)
-    (date "pe 11. elokuuta 2017 17.18.23")
+    (date "ma 14. elokuuta 2017 11.23.26")
     (tool "Eeschema (2017-01-11 revision e99b79c)-master")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -1423,10 +1423,10 @@
         (pin (num 4) (name S-) (type input))
         (pin (num 5) (name VCC) (type input)))))
   (libraries
-    (library (logical kemet)
-      (uri /home/usevolt/uv/kicad/libs/kemet.lib))
     (library (logical multicomp)
       (uri /home/usevolt/uv/kicad/libs/multicomp.lib))
+    (library (logical kemet)
+      (uri /home/usevolt/uv/kicad/libs/kemet.lib))
     (library (logical usevolt)
       (uri /home/usevolt/uv/kicad/libs/usevolt.lib)))
   (nets
