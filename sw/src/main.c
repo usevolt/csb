@@ -69,6 +69,7 @@ void output_step(output_st *this, uint16_t step_ms) {
 			this->overcurrent_counter++;
 			// send EMCY message
 			uv_canopen_emcy_send(CANOPEN_EMCY_DEVICE_SPECIFIC, this->overcurrent_emcy_value);
+			printf("overcurrent!\n");
 		}
 	}
 	else if (this->state == CSB_OUTPUT_STATE_OVERCURRENT) {
@@ -156,7 +157,7 @@ void step(void* me) {
 	init(this);
 
 	while (true) {
-		unsigned int step_ms = 5;
+		unsigned int step_ms = 1;
 		// update watchdog timer value to prevent a hard reset
 //		uw_wdt_update();
 
