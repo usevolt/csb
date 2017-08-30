@@ -39,7 +39,7 @@
 #define CONFIG_UV_BOOTLOADER			1
 
 
-#define CONFIG_PWM						1
+#define CONFIG_PWM						0
 #define CONFIG_PWM0						1
 #define CONFIG_PWM0_0					1
 #define CONFIG_PWM0_0_IO				P0_0

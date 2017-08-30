@@ -63,25 +63,26 @@ void output_step(output_st *this, uint16_t step_ms) {
 	if (this->state == CSB_OUTPUT_STATE_ON) {
 		uv_gpio_set(this->gpio, true);
 		if ((this->current > this->max_current)) {
-			this->state = CSB_OUTPUT_STATE_OVERCURRENT;
 			uv_gpio_set(this->gpio, false);
+			this->state = CSB_OUTPUT_STATE_OVERCURRENT;
 			uv_delay_init(OUTPUT_OVERCURRENT_DELAY_MS, &this->overcurrent_delay);
 			this->overcurrent_counter++;
 			// send EMCY message
 			uv_canopen_emcy_send(CANOPEN_EMCY_DEVICE_SPECIFIC, this->overcurrent_emcy_value);
-			printf("overcurrent!\n");
+			printf("overcurrent! %i\n", this->current);
 		}
 	}
 	else if (this->state == CSB_OUTPUT_STATE_OVERCURRENT) {
-		if (uv_delay(step_ms, &this->overcurrent_delay)) {
-			// test by putting output ON and seeing if it stays without
-			// triggering overcurrent
-			uv_gpio_set(this->gpio, true);
-			output_set_state(this,
-					(this->overcurrent_counter < OUTPUT_OVERCURRENT_COUNTER_VAL) ?
-							CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
-		}
-		uv_gpio_set(this->gpio, false);
+		output_set_state(this, CSB_OUTPUT_STATE_OFF);
+//		if (uv_delay(step_ms, &this->overcurrent_delay)) {
+//			// test by putting output ON and seeing if it stays without
+//			// triggering overcurrent
+//			uv_gpio_set(this->gpio, true);
+//			output_set_state(this,
+//					(this->overcurrent_counter < OUTPUT_OVERCURRENT_COUNTER_VAL) ?
+//							CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+//		}
+//		uv_gpio_set(this->gpio, false);
 	}
 	else {
 		uv_gpio_set(this->gpio, false);
@@ -157,7 +158,7 @@ void step(void* me) {
 	init(this);
 
 	while (true) {
-		unsigned int step_ms = 1;
+		unsigned int step_ms = 3;
 		// update watchdog timer value to prevent a hard reset
 //		uw_wdt_update();
 
