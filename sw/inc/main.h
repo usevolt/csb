@@ -16,7 +16,6 @@
 
 
 #define OUTPUT_OVERCURRENT_DELAY_MS		1000
-#define OUTPUT_MOVING_AVG_COUNT			1
 #define OUTPUT_OVERCURRENT_COUNTER_VAL	4
 
 
@@ -32,17 +31,19 @@
 
 /// @brief: Structure for an output
 typedef struct {
-	uv_moving_aver_st avg;
 	uint16_t max_current;
 	csb_output_state_e state;
 	int32_t current;
-	int overcurrent_delay;
-	uint8_t overcurrent_counter;
+	uint16_t overcurrent_counter;
 	uv_gpios_e gpio;
 	uv_adc_channels_e adc_chn;
+	uint16_t adc;
 	csb_emcy_e overcurrent_emcy_value;
 } output_st;
 
+
+/// @brief: HAL library ADC callback function
+void adc_callback(void);
 
 /// @brief: Initializes a single output
 void output_init(output_st *this, uint16_t max_current, uint8_t init_state,
@@ -53,6 +54,9 @@ void output_init(output_st *this, uint16_t max_current, uint8_t init_state,
 ///
 /// @return: Value representing the gpio state which should be set to enabling gpio pin
 void output_step(output_st *this, uint16_t step_ms);
+
+/// @brief: Should be called when new ADC conversion result is achieved
+void output_adc(output_st *this);
 
 
 static inline void output_set_state(output_st *this, csb_output_state_e state) {

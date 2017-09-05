@@ -17,78 +17,90 @@
 
 dev_st dev;
 
+
+
+
+
+
+
+
+
+
+
+
 // Current sense amplifiers are not ideal rail-to-rail amplifiers,
 // this is the amount of millivolts the amplifier shows when no load is applied
 #define OUTPUT_CUR_AMPL_OFFSET_MV	23
 // Current sense resistor's resistor value in milliohms
 #define OUTPUT_CUR_SENSE_RES_MOHM	2
 // Current sense amplifiers amplification
-#define OUTPUT_CUR_AMPLIFICATION	62
+#define OUTPUT_CUR_AMPLIFICATION	50
+// constant value which is used to check for short circuits in ADC callback
+#define OUTPUT_SHORTCIRCUIT_LIMIT	((uint32_t) (ADC_MAX_VALUE * 0.7f))
+// limit how many times the output is toggled in case of over current
+#define OUTPUT_OVERCURRENT_COUNTER_LIMIT	40
 
-
-const char * t_state_names[] = {
-		"On",
-		"Over current",
-		"Disabled"
-};
+#define ADC_START()		do { uv_adc_start(DRIVE_LIGHT_SENSE_CHN | WORK_LIGHT_SENSE_CHN | \
+						IN_LIGHT_SENSE_CHN | BACK_LIGHT_SENSE_CHN | BEACON_SENSE_CHN | \
+						WIPER_SENSE_CHN | COOLER_SENSE_CHN);} while (0)
 
 
 void output_init(output_st *this, uint16_t max_current, uint8_t init_state,
 		uv_gpios_e gpio, uv_adc_channels_e adc_chn, csb_emcy_e overcurrent_emcy_value) {
 	this->max_current = max_current;
 	this->overcurrent_emcy_value = overcurrent_emcy_value;
-	uv_delay_init(OUTPUT_OVERCURRENT_DELAY_MS, &this->overcurrent_delay);
 	this->state = init_state;
 	this->gpio = gpio;
 	this->adc_chn = adc_chn;
+	this->adc = 0;
 	this->overcurrent_counter = 0;
-	uv_moving_aver_init(&this->avg, OUTPUT_MOVING_AVG_COUNT);
+	this->current = 0;
 	uv_gpio_init_output(this->gpio, (this->state == CSB_OUTPUT_STATE_ON));
 }
 
 
+void output_adc(output_st *this) {
+	this->adc = uv_adc_read(this->adc_chn);
+	if (this->adc > OUTPUT_SHORTCIRCUIT_LIMIT) {
+//		uv_gpio_set(this->gpio, false);
+//		this->overcurrent_counter++;
+	}
+}
+
+
 void output_step(output_st *this, uint16_t step_ms) {
-	int32_t adc = uv_adc_read(this->adc_chn);
-	int32_t mv = (int32_t) adc * 3300 / ADC_MAX_VALUE - OUTPUT_CUR_AMPL_OFFSET_MV;
+	int32_t mv = (int32_t) this->adc * 3300 / ADC_MAX_VALUE - OUTPUT_CUR_AMPL_OFFSET_MV;
 	// current is multiplied by inverted resistor value (1 / 0.002) and divided
 	// by current sensing amplification
-	int32_t current = mv * ((1000 / OUTPUT_CUR_SENSE_RES_MOHM) / OUTPUT_CUR_AMPLIFICATION);
-	if (current < 0) {
-		current = 0;
+	this->current = mv * (1000 / (OUTPUT_CUR_SENSE_RES_MOHM * OUTPUT_CUR_AMPLIFICATION));
+	if (this->current < 0) {
+		this->current = 0;
 	}
 
-	this->current = uv_moving_aver_step(&this->avg, current);
-
-
 	if (this->state == CSB_OUTPUT_STATE_ON) {
-		uv_gpio_set(this->gpio, true);
 		if ((this->current > this->max_current)) {
 			uv_gpio_set(this->gpio, false);
-			this->state = CSB_OUTPUT_STATE_OVERCURRENT;
-			uv_delay_init(OUTPUT_OVERCURRENT_DELAY_MS, &this->overcurrent_delay);
 			this->overcurrent_counter++;
-			// send EMCY message
-			uv_canopen_emcy_send(CANOPEN_EMCY_DEVICE_SPECIFIC, this->overcurrent_emcy_value);
-			printf("overcurrent! %i\n", this->current);
+		}
+		else {
+			uv_gpio_set(this->gpio, true);
+		}
+		if (this->overcurrent_counter >= OUTPUT_OVERCURRENT_COUNTER_LIMIT) {
+			output_set_state(this, CSB_OUTPUT_STATE_OVERCURRENT);
 		}
 	}
 	else if (this->state == CSB_OUTPUT_STATE_OVERCURRENT) {
+		uv_gpio_set(this->gpio, false);
+		this->overcurrent_counter = 0;
 		output_set_state(this, CSB_OUTPUT_STATE_OFF);
-//		if (uv_delay(step_ms, &this->overcurrent_delay)) {
-//			// test by putting output ON and seeing if it stays without
-//			// triggering overcurrent
-//			uv_gpio_set(this->gpio, true);
-//			output_set_state(this,
-//					(this->overcurrent_counter < OUTPUT_OVERCURRENT_COUNTER_VAL) ?
-//							CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
-//		}
-//		uv_gpio_set(this->gpio, false);
+		// send EMCY message
+		uv_canopen_emcy_send(CANOPEN_EMCY_DEVICE_SPECIFIC, this->overcurrent_emcy_value);
+		printf("overcurrent! %i\n", this->current);
 	}
 	else {
 		uv_gpio_set(this->gpio, false);
 		this->overcurrent_counter = 0;
 	}
-
 }
 
 
@@ -101,7 +113,36 @@ void output_step(output_st *this, uint16_t step_ms) {
 
 
 
-#define this ((dev_st*) me)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define this ((dev_st*) &dev)
+
+
+void adc_callback(void) {
+	uv_disable_int();
+	output_adc(&this->drive_light);
+	output_adc(&this->work_light);
+	output_adc(&this->in_light);
+	output_adc(&this->back_light);
+	output_adc(&this->beacon);
+	output_adc(&this->wiper);
+	output_adc(&this->cooler);
+	uv_enable_int();
+
+	ADC_START();
+}
 
 
 void wiper_set_speed(void *me, uint8_t speed) {
@@ -148,6 +189,7 @@ void init(dev_st* me) {
 	uv_gpio_init_input(WIPER_SENSOR_IO, PULL_DOWN_ENABLED);
 	uv_gpio_init_input(COOLER_P_IO, PULL_DOWN_ENABLED);
 
+	ADC_START();
 }
 
 
@@ -158,7 +200,7 @@ void step(void* me) {
 	init(this);
 
 	while (true) {
-		unsigned int step_ms = 3;
+		unsigned int step_ms = 1;
 		// update watchdog timer value to prevent a hard reset
 //		uw_wdt_update();
 
@@ -181,8 +223,8 @@ void step(void* me) {
 				this->wiper.current +
 				this->cooler.current;
 
-
 		uv_rtos_task_delay(step_ms);
+
 	}
 }
 
