@@ -27,6 +27,9 @@
 #define BEACON_MAX_CURRENT_MA			5000
 #define WIPER_MAX_CURRENT_MA			5000
 #define COOLER_MAX_CURRENT_MA			15000
+#define OILCOOLER_MAX_CURRENT_MA		10000
+
+#define WIPER_SLOWEST_DELAY_MS			30000
 
 
 
@@ -41,8 +44,10 @@ typedef struct _dev_st {
 	uv_output_st beacon;
 	uv_output_st wiper;
 	uv_output_st cooler;
+	uv_output_st oilcooler;
 
 	uint8_t wiper_speed;
+	int wiper_delay;
 	// cooler compressor input signal from the cooler
 	uint8_t cooler_p;
 
@@ -58,7 +63,7 @@ typedef struct _dev_st {
 } dev_st;
 
 
-void wiper_set_speed(void *me, uint8_t speed);
+void wiper_set_speed(uint8_t speed);
 
 void step(void* me);
 

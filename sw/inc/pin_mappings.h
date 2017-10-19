@@ -22,6 +22,7 @@
 #define DRIVE_LIGHT_SENSE_CHN		ADC0_8
 #define COOLER_SENSE_CHN			ADC1_4
 #define IN_LIGHT_SENSE_CHN			ADC1_6
+#define OIL_COOLER_SENSE_CHN		ADC1_3
 
 #define WORK_LIGHT_IO				P0_3
 #define BACK_LIGHT_IO				P0_4
@@ -31,6 +32,7 @@
 #define IN_LIGHT_IO					P0_15
 #define WIPER_SENSOR_IO				P1_4
 #define COOLER_IO					P0_16
+#define OIL_COOLER_IO				P0_12
 #define COOLER_P_IO					P1_5
 
 

@@ -25,6 +25,7 @@ void inl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv)
 void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
+void oilcooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 
 
 canopen_object_st obj_dict[] = {
@@ -153,6 +154,20 @@ canopen_object_st obj_dict[] = {
 				.type = CSB_COOLER_P_TYPE,
 				.permissions = CSB_COOLER_P_PERMISSIONS,
 				.data_ptr = &dev.cooler_p
+		},
+		{
+				.main_index = CSB_OILCOOLER_STATUS_INDEX,
+				.sub_index = CSB_OILCOOLER_STATUS_SUBINDEX,
+				.type = CSB_OILCOOLER_STATUS_TYPE,
+				.permissions = CSB_OILCOOLER_STATUS_PERMISSIONS,
+				.data_ptr = &dev.oilcooler.state
+		},
+		{
+				.main_index = CSB_OILCOOLER_CURRENT_INDEX,
+				.sub_index = CSB_OILCOOLER_CURRENT_SUBINDEX,
+				.type = CSB_OILCOOLER_CURRENT_TYPE,
+				.permissions = CSB_OILCOOLER_CURRENT_PERMISSIONS,
+				.data_ptr = &dev.oilcooler.current
 		}
 
 };
@@ -212,6 +227,13 @@ const uv_command_st terminal_commands[] = {
 				.instructions = "Sets the cooler output state.\n"
 						"Usage: cooler (1/0)",
 				.callback = &cooler_callb
+		},
+		{
+				.id = CMD_OILCOOLER,
+				.str = "oilc",
+				.instructions = "Sets the oil cooler output state.\n"
+						"Usage: oilc (1/0)",
+				.callback = &oilcooler_callb
 		}
 };
 
@@ -277,7 +299,7 @@ void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 
 void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		wiper_set_speed(this, argv[0].number);
+		wiper_set_speed(argv[0].number);
 	}
 	printf("wiper light state: %u, current: %i\n", this->wiper.state,
 			(unsigned int) this->wiper.current);
@@ -290,6 +312,15 @@ void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 	}
 	printf("cooler state: %u, current: %i\n", this->cooler.state,
 			(unsigned int) this->cooler.current);
+}
+
+void oilcooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
+	if (args) {
+		uv_output_set_state(&this->oilcooler,
+				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+	}
+	printf("oil cooler state: %u, current: %i\n", this->oilcooler.state,
+			(unsigned int) this->oilcooler.current);
 }
 
 

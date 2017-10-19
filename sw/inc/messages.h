@@ -30,7 +30,8 @@ typedef enum {
 	CMD_IN_LIGHT,
 	CMD_BEACON,
 	CMD_WIPER,
-	CMD_COOLER
+	CMD_COOLER,
+	CMD_OILCOOLER
 } gsm_commands_e;
 
 

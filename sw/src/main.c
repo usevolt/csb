@@ -21,11 +21,15 @@ dev_st dev;
 
 
 
-void wiper_set_speed(void *me, uint8_t speed) {
+void wiper_set_speed(uint8_t speed) {
 	if (speed > CSB_WIPER_MAX_SPEED) {
 		speed = CSB_WIPER_MAX_SPEED;
 	}
 	this->wiper_speed = speed;
+	uv_delay_init(WIPER_SLOWEST_DELAY_MS -
+			((uint32_t) this->wiper_speed * WIPER_SLOWEST_DELAY_MS / CSB_WIPER_MAX_SPEED),
+			&this->wiper_delay);
+	printf("wiper speed: %u\n", this->wiper_delay);
 }
 
 
@@ -42,6 +46,7 @@ void init(dev_st* me) {
 	}
 
 	this->total_current = 0;
+	wiper_set_speed(0);
 
 	uv_output_init(&this->drive_light, DRIVE_LIGHT_SENSE_CHN, DRIVE_LIGHT_IO,
 			SENSE_MOHM, 0, DRIVE_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
@@ -58,12 +63,19 @@ void init(dev_st* me) {
 	uv_output_init(&this->beacon, BEACON_SENSE_CHN, BEACON_IO,
 			SENSE_MOHM, 0, BEACON_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_BEACON_OVERCURRENT, CSB_EMCY_BEACON_FAULT);
+	uv_output_init(&this->wiper, WIPER_SENSE_CHN, WIPER_IO,
+			SENSE_MOHM, 0, WIPER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			CSB_EMCY_WIPER_OVERCURRENT, CSB_EMCY_WIPER_FAULT);
 	uv_output_init(&this->cooler, COOLER_SENSE_CHN, COOLER_IO,
 			SENSE_MOHM, 0, COOLER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_COOLER_OVERCURRENT, CSB_EMCY_COOLER_FAULT);
+	uv_output_init(&this->oilcooler, OIL_COOLER_SENSE_CHN, OIL_COOLER_IO,
+			SENSE_MOHM, 0, OILCOOLER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			CSB_EMCY_OILCOOLER_OVERCURRENT, CSB_EMCY_OILCOOLER_FAULT);
 
 	uv_gpio_init_input(WIPER_SENSOR_IO, PULL_DOWN_ENABLED);
 	uv_gpio_init_input(COOLER_P_IO, PULL_DOWN_ENABLED);
+
 
 }
 
@@ -89,6 +101,7 @@ void step(void* me) {
 		uv_output_step(&this->beacon, step_ms);
 		uv_output_step(&this->wiper, step_ms);
 		uv_output_step(&this->cooler, step_ms);
+		uv_output_step(&this->oilcooler, step_ms);
 
 		this->total_current = this->drive_light.current +
 				this->work_light.current +
@@ -96,7 +109,25 @@ void step(void* me) {
 				this->in_light.current +
 				this->beacon.current +
 				this->wiper.current +
-				this->cooler.current;
+				this->cooler.current +
+				this->oilcooler.current;
+
+
+		// wiper logic
+		if (this->wiper_speed) {
+			// delay cant be greater than current wiper speed max delay
+			if (this->wiper_delay >
+				((uint32_t) this->wiper_speed *
+						WIPER_SLOWEST_DELAY_MS / CSB_WIPER_MAX_SPEED)) {
+				this->wiper_delay = (uint32_t) this->wiper_speed *
+						WIPER_SLOWEST_DELAY_MS / CSB_WIPER_MAX_SPEED;
+			}
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+		}
+		else {
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+		}
+
 
 		uv_rtos_task_delay(step_ms);
 
