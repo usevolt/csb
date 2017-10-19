@@ -1,4 +1,4 @@
-update=ke 28. kesäkuuta 2017 20.35.59
+update=to 19. lokakuuta 2017 21.34.38
 version=1
 last_client=kicad
 [pcbnew]
@@ -29,8 +29,9 @@ version=1
 version=1
 LibDir=../../../uv/kicad/libs
 [eeschema/libraries]
-LibName1=/home/usevolt/uv/kicad/libs/kemet
-LibName2=/home/usevolt/uv/kicad/libs/multicomp
-LibName3=/home/usevolt/uv/kicad/libs/power
-LibName4=/home/usevolt/uv/kicad/libs/usevolt
-LibName5=/home/usevolt/uv/kicad/libs/wurth_elektronik_LED
+LibName1=csb-rescue
+LibName2=/home/usevolt/uv/kicad/libs/kemet
+LibName3=/home/usevolt/uv/kicad/libs/multicomp
+LibName4=/home/usevolt/uv/kicad/libs/power
+LibName5=/home/usevolt/uv/kicad/libs/usevolt
+LibName6=/home/usevolt/uv/kicad/libs/wurth_elektronik_LED

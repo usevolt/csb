@@ -18,7 +18,6 @@
 extern dev_st dev;
 
 
-void vdd_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void drivel_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void workl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void backl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
@@ -233,7 +232,7 @@ unsigned int commands_size(void) {
 
 void drivel_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		output_set_state(&this->drive_light,
+		uv_output_set_state(&this->drive_light,
 				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
 	}
 	printf("drive light state: %u, current: %i\n", this->drive_light.state,
@@ -242,7 +241,7 @@ void drivel_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 
 void workl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		output_set_state(&this->work_light,
+		uv_output_set_state(&this->work_light,
 				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
 	}
 	printf("work light state: %u, current: %i\n", this->work_light.state,
@@ -251,7 +250,7 @@ void workl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 
 void backl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		output_set_state(&this->back_light,
+		uv_output_set_state(&this->back_light,
 				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
 	}
 	printf("back light state: %u, current: %i\n", this->back_light.state,
@@ -260,7 +259,7 @@ void backl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 
 void inl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		output_set_state(&this->in_light,
+		uv_output_set_state(&this->in_light,
 				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
 	}
 	printf("in light state: %u, current: %i\n", this->in_light.state,
@@ -269,7 +268,7 @@ void inl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv)
 
 void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		output_set_state(&this->beacon,
+		uv_output_set_state(&this->beacon,
 				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
 	}
 	printf("beacon light state: %u, current: %i\n", this->beacon.state,
@@ -286,7 +285,7 @@ void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		output_set_state(&this->cooler,
+		uv_output_set_state(&this->cooler,
 				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
 	}
 	printf("cooler state: %u, current: %i\n", this->cooler.state,
