@@ -26,10 +26,23 @@ void wiper_set_speed(uint8_t speed) {
 		speed = CSB_WIPER_MAX_SPEED;
 	}
 	this->wiper_speed = speed;
-	uv_delay_init(WIPER_SLOWEST_DELAY_MS -
-			((uint32_t) this->wiper_speed * WIPER_SLOWEST_DELAY_MS / CSB_WIPER_MAX_SPEED),
-			&this->wiper_delay);
-	printf("wiper speed: %u\n", this->wiper_delay);
+	this->last_wiper_speed = speed;
+
+	// start wiper when speed is adjusted
+	if (this->wiper_speed) {
+		if (uv_output_get_state(&this->wiper) == OUTPUT_STATE_ON) {
+			uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+		}
+		else {
+			uv_delay_init(WIPER_SLOWEST_DELAY_MS -
+					(uint64_t) WIPER_SLOWEST_DELAY_MS *
+					speed * speed / (CSB_WIPER_MAX_SPEED * CSB_WIPER_MAX_SPEED),
+					&this->wiper_delay);
+		}
+	}
+	else {
+		uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+	}
 }
 
 
@@ -113,19 +126,37 @@ void step(void* me) {
 				this->oilcooler.current;
 
 
+		// wiper speed changed
+		if (this->wiper_speed != this->last_wiper_speed) {
+			wiper_set_speed(this->wiper_speed);
+		}
 		// wiper logic
 		if (this->wiper_speed) {
-			// delay cant be greater than current wiper speed max delay
-			if (this->wiper_delay >
-				((uint32_t) this->wiper_speed *
-						WIPER_SLOWEST_DELAY_MS / CSB_WIPER_MAX_SPEED)) {
-				this->wiper_delay = (uint32_t) this->wiper_speed *
-						WIPER_SLOWEST_DELAY_MS / CSB_WIPER_MAX_SPEED;
+
+			if (uv_delay(step_ms, &this->wiper_delay)) {
+				if (uv_output_get_state(&this->wiper) == OUTPUT_STATE_OFF) {
+					// wiper is at home, start it
+					uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+					wiper_set_speed(this->wiper_speed);
+				}
+				else {
+					// wiper is moving, wait for it to return home
+					this->wiper_home_req = true;
+				}
 			}
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+
+			// stop wiper when it is home
+			if ((this->wiper_home_req) &&
+					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE)) {
+				uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+				wiper_set_speed(this->wiper_speed);
+				this->wiper_home_req = false;
+			}
 		}
 		else {
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+			uv_output_set_state(&this->wiper,
+					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) ?
+							OUTPUT_STATE_OFF : OUTPUT_STATE_ON);
 		}
 
 

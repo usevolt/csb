@@ -30,6 +30,8 @@
 #define OILCOOLER_MAX_CURRENT_MA		10000
 
 #define WIPER_SLOWEST_DELAY_MS			30000
+#define WIPER_ON_DELAY_MS				300
+#define WIPER_HOME_STATE				1
 
 
 
@@ -47,7 +49,9 @@ typedef struct _dev_st {
 	uv_output_st oilcooler;
 
 	uint8_t wiper_speed;
+	uint8_t last_wiper_speed;
 	int wiper_delay;
+	bool wiper_home_req;
 	// cooler compressor input signal from the cooler
 	uint8_t cooler_p;
 
