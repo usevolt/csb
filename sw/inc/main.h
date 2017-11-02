@@ -33,6 +33,8 @@
 #define WIPER_ON_DELAY_MS				300
 #define WIPER_HOME_STATE				1
 
+#define OIL_TEMP_HYSTERESIS_C				10
+#define OIL_TEMP_DEFAULT_TRIGGER_VALUE_C	70
 
 
 
@@ -55,12 +57,19 @@ typedef struct _dev_st {
 	// cooler compressor input signal from the cooler
 	uint8_t cooler_p;
 
+	uv_hysteresis_st oil_temp;
+
+	struct {
+		int8_t oil_temp;
+	} esb;
+
 	uint16_t total_current;
 
 	uv_data_start_t data_start;
-
-	uint8_t beacon_enabled;
-
+	struct {
+		int8_t oilcooler_trigger_temp;
+		uint8_t beacon_enabled;
+	};
 	uv_data_end_t data_end;
 
 

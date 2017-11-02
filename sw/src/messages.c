@@ -26,6 +26,7 @@ void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void oilcooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
+void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 
 
 canopen_object_st obj_dict[] = {
@@ -168,6 +169,20 @@ canopen_object_st obj_dict[] = {
 				.type = CSB_OILCOOLER_CURRENT_TYPE,
 				.permissions = CSB_OILCOOLER_CURRENT_PERMISSIONS,
 				.data_ptr = &dev.oilcooler.current
+		},
+		{
+				.main_index = CSB_ESB_OIL_TEMP_INDEX,
+				.sub_index = CSB_ESB_OIL_TEMP_SUBINDEX,
+				.type = CSB_ESB_OIL_TEMP_TYPE,
+				.permissions = CSB_ESB_OIL_TEMP_PERMISSIONS,
+				.data_ptr = &dev.esb.oil_temp
+		},
+		{
+				.main_index = CSB_OILCOOLER_TRIGGER_INDEX,
+				.sub_index = CSB_OILCOOLER_TRIGGER_SUBINDEX,
+				.type = CSB_OILCOOLER_TRIGGER_TYPE,
+				.permissions = CSB_OILCOOLER_TRIGGER_PERMISSIONS,
+				.data_ptr = &dev.oilcooler_trigger_temp
 		}
 
 };
@@ -234,6 +249,13 @@ const uv_command_st terminal_commands[] = {
 				.instructions = "Sets the oil cooler output state.\n"
 						"Usage: oilc (1/0)",
 				.callback = &oilcooler_callb
+		},
+		{
+				.id = CMD_STAT,
+				.str = "stat",
+				.instructions = "Shows system status\n"
+						"Usage: stat",
+				.callback = &stat_callb
 		}
 };
 
@@ -255,7 +277,7 @@ unsigned int commands_size(void) {
 void drivel_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->drive_light,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("drive light state: %u, current: %i\n", this->drive_light.state,
 			(unsigned int) this->drive_light.current);
@@ -264,7 +286,7 @@ void drivel_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 void workl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->work_light,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("work light state: %u, current: %i\n", this->work_light.state,
 			(unsigned int) this->work_light.current);
@@ -273,7 +295,7 @@ void workl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 void backl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->back_light,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("back light state: %u, current: %i\n", this->back_light.state,
 			(unsigned int) this->back_light.current);
@@ -282,7 +304,7 @@ void backl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 void inl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->in_light,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("in light state: %u, current: %i\n", this->in_light.state,
 			(unsigned int) this->in_light.current);
@@ -291,7 +313,7 @@ void inl_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv)
 void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->beacon,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("beacon light state: %u, current: %i\n", this->beacon.state,
 			(unsigned int) this->beacon.current);
@@ -301,14 +323,14 @@ void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 	if (args) {
 		wiper_set_speed(argv[0].number);
 	}
-	printf("wiper light state: %u, current: %i\n", this->wiper.state,
-			(unsigned int) this->wiper.current);
+	printf("wiper light state: %u, current: %i, speed: %u\n", this->wiper.state,
+			(unsigned int) this->wiper.current, this->wiper_speed);
 }
 
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->cooler,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("cooler state: %u, current: %i\n", this->cooler.state,
 			(unsigned int) this->cooler.current);
@@ -317,12 +339,35 @@ void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 void oilcooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
 		uv_output_set_state(&this->oilcooler,
-				(argv[0].number) ? CSB_OUTPUT_STATE_ON : CSB_OUTPUT_STATE_OFF);
+				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 	}
 	printf("oil cooler state: %u, current: %i\n", this->oilcooler.state,
 			(unsigned int) this->oilcooler.current);
 }
 
+static void stat_output(uv_output_st *output, const char *output_name) {
+	printf("%s state: %u, current: %u mA, adc: 0x%x / 0x%x\n",
+			output_name, uv_output_get_state(output), uv_output_get_current(output),
+			uv_adc_read(output->adc_chn), ADC_MAX_VALUE);
+}
+
+void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
+	printf("SYSTEM STATUS:\n");
+	printf("Total current: %u mA\n", (unsigned int) this->total_current);
+	stat_output(&this->work_light, "Work Light");
+	stat_output(&this->drive_light, "Drive Light");
+	stat_output(&this->back_light, "Back Light");
+	stat_output(&this->in_light, "In Light");
+	stat_output(&this->beacon, "Beacon");
+	stat_output(&this->cooler, "Cooler");
+	stat_output(&this->wiper, "Wiper");
+	stat_output(&this->oilcooler, "Oil Cooler");
+
+	printf("Wiper speed: %i\nWiper pos: %u\nCooler P: %i\n"
+			"Beacon enabled: %i\nESB oil temp: %i\n",
+			this->wiper_speed, uv_gpio_get(WIPER_SENSOR_IO),
+			this->cooler_p, this->beacon_enabled, this->esb.oil_temp);
+}
 
 
 

@@ -54,12 +54,15 @@ void init(dev_st* me) {
 	if (uv_memory_load()) {
 		// initialize default settings
 		this->beacon_enabled = 0;
+		this->oilcooler_trigger_temp = OIL_TEMP_DEFAULT_TRIGGER_VALUE_C;
 
 		uv_memory_save();
 	}
 
 	this->total_current = 0;
 	wiper_set_speed(0);
+	this->esb.oil_temp = 0;
+	uv_hysteresis_init(&this->oil_temp, this->oilcooler_trigger_temp, OIL_TEMP_HYSTERESIS_C, false);
 
 	uv_output_init(&this->drive_light, DRIVE_LIGHT_SENSE_CHN, DRIVE_LIGHT_IO,
 			SENSE_MOHM, 0, DRIVE_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
@@ -90,6 +93,7 @@ void init(dev_st* me) {
 	uv_gpio_init_input(COOLER_P_IO, PULL_DOWN_ENABLED);
 
 
+	uv_canopen_set_state(CANOPEN_OPERATIONAL);
 }
 
 
@@ -100,7 +104,7 @@ void step(void* me) {
 	init(this);
 
 	while (true) {
-		unsigned int step_ms = 10;
+		unsigned int step_ms = 20;
 		// update watchdog timer value to prevent a hard reset
 //		uw_wdt_update();
 
@@ -127,37 +131,44 @@ void step(void* me) {
 
 
 		// wiper speed changed
-		if (this->wiper_speed != this->last_wiper_speed) {
-			wiper_set_speed(this->wiper_speed);
-		}
-		// wiper logic
-		if (this->wiper_speed) {
+//		if (this->wiper_speed != this->last_wiper_speed) {
+//			wiper_set_speed(this->wiper_speed);
+//		}
+//		// wiper logic
+//		if (this->wiper_speed) {
+//			if (uv_delay(step_ms, &this->wiper_delay)) {
+//				if (uv_output_get_state(&this->wiper) == OUTPUT_STATE_OFF) {
+//					// wiper is at home, start it
+//					uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+//					wiper_set_speed(this->wiper_speed);
+//				}
+//				else {
+//					// wiper is moving, wait for it to return home
+//					this->wiper_home_req = true;
+//				}
+//			}
+//
+//			// stop wiper when it is home
+//			if ((this->wiper_home_req) &&
+//					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE)) {
+//				uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+//				wiper_set_speed(this->wiper_speed);
+//				this->wiper_home_req = false;
+//			}
+//		}
+//		else {
+//			uv_output_set_state(&this->wiper,
+//					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) ?
+//							OUTPUT_STATE_OFF : OUTPUT_STATE_ON);
+//			printf("%u\n", uv_gpio_get(WIPER_SENSOR_IO));
+//		}
+		uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
 
-			if (uv_delay(step_ms, &this->wiper_delay)) {
-				if (uv_output_get_state(&this->wiper) == OUTPUT_STATE_OFF) {
-					// wiper is at home, start it
-					uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
-					wiper_set_speed(this->wiper_speed);
-				}
-				else {
-					// wiper is moving, wait for it to return home
-					this->wiper_home_req = true;
-				}
-			}
-
-			// stop wiper when it is home
-			if ((this->wiper_home_req) &&
-					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE)) {
-				uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
-				wiper_set_speed(this->wiper_speed);
-				this->wiper_home_req = false;
-			}
-		}
-		else {
-			uv_output_set_state(&this->wiper,
-					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) ?
-							OUTPUT_STATE_OFF : OUTPUT_STATE_ON);
-		}
+		// oil cooler control
+		uv_hysteresis_set_trigger_value(&this->oil_temp, this->oilcooler_trigger_temp);
+		uv_hysteresis_step(&this->oil_temp, this->esb.oil_temp);
+		uv_output_set_state(&this->oilcooler, (uv_hysteresis_get_output(&this->oil_temp)) ?
+				OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 
 
 		uv_rtos_task_delay(step_ms);
