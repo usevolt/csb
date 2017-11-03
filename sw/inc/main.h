@@ -29,7 +29,7 @@
 #define COOLER_MAX_CURRENT_MA			15000
 #define OILCOOLER_MAX_CURRENT_MA		10000
 
-#define WIPER_SLOWEST_DELAY_MS			30000
+#define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
 #define WIPER_HOME_STATE				1
 
@@ -38,6 +38,12 @@
 
 
 
+typedef enum {
+	WIPER_STATE_OFF = 0,
+	WIPER_STATE_ON,
+	WIPER_STATE_RETURN_HOME,
+	WIPER_STATE_WAIT
+} wiper_states_e;
 
 typedef struct _dev_st {
 
@@ -50,10 +56,12 @@ typedef struct _dev_st {
 	uv_output_st cooler;
 	uv_output_st oilcooler;
 
+
 	uint8_t wiper_speed;
 	uint8_t last_wiper_speed;
 	int wiper_delay;
-	bool wiper_home_req;
+	wiper_states_e wiper_state;
+
 	// cooler compressor input signal from the cooler
 	uint8_t cooler_p;
 
@@ -62,6 +70,9 @@ typedef struct _dev_st {
 	struct {
 		int8_t oil_temp;
 	} esb;
+	struct {
+		uint8_t emcy;
+	} fsb;
 
 	uint16_t total_current;
 

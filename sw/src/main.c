@@ -21,30 +21,6 @@ dev_st dev;
 
 
 
-void wiper_set_speed(uint8_t speed) {
-	if (speed > CSB_WIPER_MAX_SPEED) {
-		speed = CSB_WIPER_MAX_SPEED;
-	}
-	this->wiper_speed = speed;
-	this->last_wiper_speed = speed;
-
-	// start wiper when speed is adjusted
-	if (this->wiper_speed) {
-		if (uv_output_get_state(&this->wiper) == OUTPUT_STATE_ON) {
-			uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
-		}
-		else {
-			uv_delay_init(WIPER_SLOWEST_DELAY_MS -
-					(uint64_t) WIPER_SLOWEST_DELAY_MS *
-					speed * speed / (CSB_WIPER_MAX_SPEED * CSB_WIPER_MAX_SPEED),
-					&this->wiper_delay);
-		}
-	}
-	else {
-		uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
-	}
-}
-
 
 void init(dev_st* me) {
 	//init terminal and pass application terminal commands array as a parameter
@@ -60,9 +36,13 @@ void init(dev_st* me) {
 	}
 
 	this->total_current = 0;
-	wiper_set_speed(0);
+	this->wiper_state = WIPER_STATE_OFF;
+	this->wiper_speed = 0;
+	this->last_wiper_speed = this->wiper_speed;
+	this->cooler_p = 0;
 	this->esb.oil_temp = 0;
 	uv_hysteresis_init(&this->oil_temp, this->oilcooler_trigger_temp, OIL_TEMP_HYSTERESIS_C, false);
+	this->fsb.emcy = 0;
 
 	uv_output_init(&this->drive_light, DRIVE_LIGHT_SENSE_CHN, DRIVE_LIGHT_IO,
 			SENSE_MOHM, 0, DRIVE_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
@@ -76,6 +56,7 @@ void init(dev_st* me) {
 	uv_output_init(&this->in_light, IN_LIGHT_SENSE_CHN, IN_LIGHT_IO,
 			SENSE_MOHM, 0, IN_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_IN_LIGHT_OVERCURRENT, CSB_EMCY_IN_LIGHT_FAULT);
+	uv_output_set_state(&this->in_light, OUTPUT_STATE_ON);
 	uv_output_init(&this->beacon, BEACON_SENSE_CHN, BEACON_IO,
 			SENSE_MOHM, 0, BEACON_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_BEACON_OVERCURRENT, CSB_EMCY_BEACON_FAULT);
@@ -129,40 +110,68 @@ void step(void* me) {
 				this->cooler.current +
 				this->oilcooler.current;
 
+		// back light
+		uv_output_set_state(&this->back_light,
+				uv_output_get_state(&this->work_light));
 
-		// wiper speed changed
-//		if (this->wiper_speed != this->last_wiper_speed) {
-//			wiper_set_speed(this->wiper_speed);
-//		}
-//		// wiper logic
-//		if (this->wiper_speed) {
-//			if (uv_delay(step_ms, &this->wiper_delay)) {
-//				if (uv_output_get_state(&this->wiper) == OUTPUT_STATE_OFF) {
-//					// wiper is at home, start it
-//					uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
-//					wiper_set_speed(this->wiper_speed);
-//				}
-//				else {
-//					// wiper is moving, wait for it to return home
-//					this->wiper_home_req = true;
-//				}
-//			}
-//
-//			// stop wiper when it is home
-//			if ((this->wiper_home_req) &&
-//					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE)) {
-//				uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
-//				wiper_set_speed(this->wiper_speed);
-//				this->wiper_home_req = false;
-//			}
-//		}
-//		else {
-//			uv_output_set_state(&this->wiper,
-//					(uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) ?
-//							OUTPUT_STATE_OFF : OUTPUT_STATE_ON);
-//			printf("%u\n", uv_gpio_get(WIPER_SENSOR_IO));
-//		}
-		uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+		// wiper logic
+		// wiper is "going away" from home
+		if (this->wiper_state == WIPER_STATE_ON) {
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+
+			if (uv_delay(step_ms, &this->wiper_delay) ||
+					uv_delay_has_ended(&this->wiper_delay)) {
+
+				if (uv_gpio_get(WIPER_SENSOR_IO) != WIPER_HOME_STATE) {
+					// wiper is now on the furthest position
+					uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+					this->wiper_state = WIPER_STATE_RETURN_HOME;
+				}
+			}
+		}
+		// wiper is returning to home
+		else if (this->wiper_state == WIPER_STATE_RETURN_HOME) {
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+
+			if (uv_delay(step_ms, &this->wiper_delay) ||
+					uv_delay_has_ended(&this->wiper_delay)) {
+
+				if (uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) {
+					// wiper is now home, wait for the delay specified by wiper speed
+					uv_delay_init(WIPER_SLOWEST_DELAY_MS -
+							(uint64_t) WIPER_SLOWEST_DELAY_MS *
+							this->wiper_speed / (CSB_WIPER_MAX_SPEED),
+							&this->wiper_delay);
+					this->wiper_state = WIPER_STATE_WAIT;
+				}
+			}
+
+		}
+		// wiper is waiting for delay time to end
+		else if (this->wiper_state == WIPER_STATE_WAIT) {
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+
+			if (this->wiper_speed) {
+				if (uv_delay(step_ms, &this->wiper_delay) ||
+						(this->wiper_speed != this->last_wiper_speed)) {
+					uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+					this->wiper_state = WIPER_STATE_ON;
+				}
+			}
+			else {
+				this->wiper_state = WIPER_STATE_OFF;
+			}
+		}
+		// wiper is off
+		else {
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+
+			if (this->wiper_speed) {
+				uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+				this->wiper_state = WIPER_STATE_ON;
+			}
+		}
+		this->last_wiper_speed = this->wiper_speed;
 
 		// oil cooler control
 		uv_hysteresis_set_trigger_value(&this->oil_temp, this->oilcooler_trigger_temp);
@@ -170,6 +179,15 @@ void step(void* me) {
 		uv_output_set_state(&this->oilcooler, (uv_hysteresis_get_output(&this->oil_temp)) ?
 				OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 
+		// cooler P
+		this->cooler_p = uv_gpio_get(COOLER_P_IO);
+
+		// emcy logic
+		if (this->fsb.emcy) {
+			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+			uv_output_set_state(&this->cooler, OUTPUT_STATE_OFF);
+			uv_output_set_state(&this->oilcooler, OUTPUT_STATE_OFF);
+		}
 
 		uv_rtos_task_delay(step_ms);
 

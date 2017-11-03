@@ -26,6 +26,7 @@ void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void oilcooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
+void oilc_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv);
 
 
@@ -183,6 +184,13 @@ canopen_object_st obj_dict[] = {
 				.type = CSB_OILCOOLER_TRIGGER_TYPE,
 				.permissions = CSB_OILCOOLER_TRIGGER_PERMISSIONS,
 				.data_ptr = &dev.oilcooler_trigger_temp
+		},
+		{
+				.main_index = CSB_FSB_EMCY_INDEX,
+				.sub_index = CSB_FSB_EMCY_SUBINDEX,
+				.type = CSB_FSB_EMCY_TYPE,
+				.permissions = CSB_FSB_EMCY_PERMISSIONS,
+				.data_ptr = &dev.fsb.emcy
 		}
 
 };
@@ -244,11 +252,11 @@ const uv_command_st terminal_commands[] = {
 				.callback = &cooler_callb
 		},
 		{
-				.id = CMD_OILCOOLER,
+				.id = CMD_OILC,
 				.str = "oilc",
-				.instructions = "Sets the oil cooler output state.\n"
-						"Usage: oilc (1/0)",
-				.callback = &oilcooler_callb
+				.instructions = "Sets the oil cooler trigger temperature.\n"
+						"Usage: oilc <-127...127>",
+				.callback = &oilc_callb
 		},
 		{
 				.id = CMD_STAT,
@@ -321,9 +329,9 @@ void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 
 void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		wiper_set_speed(argv[0].number);
+		this->wiper_speed = argv[0].number;
 	}
-	printf("wiper light state: %u, current: %i, speed: %u\n", this->wiper.state,
+	printf("wiper state: %u, current: %i, speed: %u\n", this->wiper.state,
 			(unsigned int) this->wiper.current, this->wiper_speed);
 }
 
@@ -336,14 +344,13 @@ void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 			(unsigned int) this->cooler.current);
 }
 
-void oilcooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
+void oilc_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		uv_output_set_state(&this->oilcooler,
-				(argv[0].number) ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
+		this->oilcooler_trigger_temp = argv[0].number;
 	}
-	printf("oil cooler state: %u, current: %i\n", this->oilcooler.state,
-			(unsigned int) this->oilcooler.current);
+	printf("Oil cooler trigger temp: %i\n", this->oilcooler_trigger_temp);
 }
+
 
 static void stat_output(uv_output_st *output, const char *output_name) {
 	printf("%s state: %u, current: %u mA, adc: 0x%x / 0x%x\n",
@@ -362,11 +369,13 @@ void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv
 	stat_output(&this->cooler, "Cooler");
 	stat_output(&this->wiper, "Wiper");
 	stat_output(&this->oilcooler, "Oil Cooler");
+	printf("Oil temp: %i\n, oil cooler hysteresis output: %u\n",
+			this->esb.oil_temp, uv_hysteresis_get_output(&this->oil_temp));
 
 	printf("Wiper speed: %i\nWiper pos: %u\nCooler P: %i\n"
-			"Beacon enabled: %i\nESB oil temp: %i\n",
+			"Beacon enabled: %i\nESB oil temp: %i\nFSB emcy: %u\n",
 			this->wiper_speed, uv_gpio_get(WIPER_SENSOR_IO),
-			this->cooler_p, this->beacon_enabled, this->esb.oil_temp);
+			this->cooler_p, this->beacon_enabled, this->esb.oil_temp, this->fsb.emcy);
 }
 
 

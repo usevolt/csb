@@ -22,6 +22,8 @@
 
 #define CONFIG_ESB_IF_REVISION			1
 
+#define CONFIG_FSB_IF_REVISION			1
+
 
 
 #endif /* UV_IF_CONFIG_H_ */

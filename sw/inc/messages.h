@@ -31,7 +31,7 @@ typedef enum {
 	CMD_BEACON,
 	CMD_WIPER,
 	CMD_COOLER,
-	CMD_OILCOOLER,
+	CMD_OILC,
 	CMD_STAT
 } gsm_commands_e;
 
