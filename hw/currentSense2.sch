@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:csb-rescue
 LIBS:kemet
 LIBS:multicomp
 LIBS:power

@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:csb-rescue
 LIBS:kemet
 LIBS:multicomp
 LIBS:power
@@ -9,7 +10,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 13
+Sheet 7 9
 Title "MSB current sense sheet"
 Date "2017-02-05"
 Rev "1"

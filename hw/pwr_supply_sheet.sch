@@ -1,15 +1,16 @@
 EESchema Schematic File Version 2
+LIBS:csb-rescue
 LIBS:kemet
-LIBS:multicomp
 LIBS:power
 LIBS:usevolt
 LIBS:wurth_elektronik_LED
+LIBS:yageo
 LIBS:csb-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 13
+Sheet 2 9
 Title "Power supply"
 Date "2016-08-20"
 Rev "1"
@@ -147,99 +148,44 @@ F 7 "KEMET" H 8604 4059 60  0001 C CNN "Manufacturer"
 	1    8600 3950
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	8000 4300 8000 4250
-Wire Wire Line
-	6850 4300 6850 4150
-Connection ~ 8000 4300
-Wire Wire Line
-	6200 4300 6200 4150
-Connection ~ 6850 4300
-Wire Wire Line
-	5550 4300 5550 4050
-Connection ~ 6200 4300
-Wire Wire Line
-	3800 4300 3800 4150
-Connection ~ 5550 4300
-Wire Wire Line
-	3400 4300 3400 4150
-Connection ~ 3800 4300
-Wire Wire Line
-	2800 4150 2800 4500
-Connection ~ 3400 4300
-Connection ~ 2800 3850
-Connection ~ 3400 3850
-Wire Wire Line
-	8600 4150 8600 4300
-Wire Wire Line
-	8600 3600 8600 3850
-Wire Wire Line
-	8600 3850 8400 3850
-Wire Wire Line
-	6700 3850 7600 3850
-Connection ~ 6850 3850
-Wire Wire Line
-	5550 3850 6300 3850
-Connection ~ 6200 3850
-Wire Wire Line
-	6000 3950 6000 3850
-Connection ~ 6000 3850
-Wire Wire Line
-	5700 3950 5550 3950
-Wire Wire Line
-	5550 3750 6850 3750
-Wire Wire Line
-	6850 3600 6850 3850
 $Comp
-L +5V #PWR204
+L +5V #PWR205
 U 1 1 57B831F8
 P 6850 3600
-F 0 "#PWR204" H 6850 3450 50  0001 C CNN
+F 0 "#PWR205" H 6850 3450 50  0001 C CNN
 F 1 "+5V" H 6865 3773 50  0000 C CNN
 F 2 "" H 6850 3600 50  0000 C CNN
 F 3 "" H 6850 3600 50  0000 C CNN
 	1    6850 3600
 	1    0    0    -1  
 $EndComp
-Connection ~ 6850 3750
 $Comp
-L +3V3 #PWR205
+L +3V3 #PWR206
 U 1 1 57B83259
 P 8600 3600
-F 0 "#PWR205" H 8600 3450 50  0001 C CNN
+F 0 "#PWR206" H 8600 3450 50  0001 C CNN
 F 1 "+3V3" H 8615 3773 50  0000 C CNN
 F 2 "" H 8600 3600 50  0000 C CNN
 F 3 "" H 8600 3600 50  0000 C CNN
 	1    8600 3600
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1350 3850 1700 3850
-Wire Wire Line
-	3800 3700 4550 3700
-Wire Wire Line
-	4550 3700 4550 3750
 Text HLabel 7050 3600 2    60   Output ~ 0
 +5V
-Wire Wire Line
-	7050 3600 6850 3600
 Text HLabel 8750 3600 2    60   Output ~ 0
 +3V3
-Wire Wire Line
-	8750 3600 8600 3600
-Text HLabel 1350 3450 0    60   Output ~ 0
+Text HLabel 3350 2850 2    60   Output ~ 0
 VDD
 Text HLabel 2700 4300 0    60   Input ~ 0
 GND
-Connection ~ 2800 4300
 NoConn ~ 4550 3850
 NoConn ~ 4550 3950
 NoConn ~ 4550 4050
 $Comp
-L VDD #PWR202
+L VDD #PWR203
 U 1 1 57B9C56A
 P 3800 2100
-F 0 "#PWR202" H 3800 1950 50  0001 C CNN
+F 0 "#PWR203" H 3800 1950 50  0001 C CNN
 F 1 "VDD" H 3817 2273 50  0000 C CNN
 F 2 "" H 3800 2100 50  0000 C CNN
 F 3 "" H 3800 2100 50  0000 C CNN
@@ -257,13 +203,11 @@ F 3 "" H 3800 2300 50  0000 C CNN
 	1    3800 2300
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	3800 2300 3800 2100
 $Comp
-L GND #PWR203
+L GND #PWR204
 U 1 1 57B9D351
 P 4300 2350
-F 0 "#PWR203" H 4300 2100 50  0001 C CNN
+F 0 "#PWR204" H 4300 2100 50  0001 C CNN
 F 1 "GND" H 4305 2177 50  0000 C CNN
 F 2 "" H 4300 2350 50  0000 C CNN
 F 3 "" H 4300 2350 50  0000 C CNN
@@ -281,8 +225,6 @@ F 3 "" H 4300 2150 50  0000 C CNN
 	1    4300 2150
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	4300 2150 4300 2350
 $Comp
 L GND #PWR201
 U 1 1 57CF1F5E
@@ -294,15 +236,6 @@ F 3 "" H 2800 4500 50  0000 C CNN
 	1    2800 4500
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3800 3850 3800 3700
-Wire Wire Line
-	1350 3450 1500 3450
-Wire Wire Line
-	1500 3450 1500 3850
-Connection ~ 1500 3850
-Wire Wire Line
-	2700 3850 3800 3850
 $Comp
 L IND_744045210 L201
 U 1 1 58945E39
@@ -338,27 +271,6 @@ F 9 "399-8375-1-ND" H 7450 4590 60  0001 C CNN "2nd Source Part Number"
 	0    1    1    0   
 $EndComp
 $Comp
-L T491D226K035AT C202
-U 1 1 58946146
-P 3800 4050
-F 0 "C202" V 3708 4153 45  0000 L CNN
-F 1 "T491D226K035AT" V 3792 4153 45  0000 L CNN
-F 2 "kemet:7343" H 3830 4200 20  0001 C CNN
-F 3 "http://www.farnell.com/datasheets/2121523.pdf?_ga=1.259966538.1948984246.1460023966" H 3800 3990 60  0001 C CNN
-F 4 "399-8375-1-ND" H 4400 4590 60  0001 C CNN "2nd Source Part Number"
-F 5 "Farnell" H 4100 4290 60  0001 C CNN "1st Source"
-F 6 "T491D226K035AT" H 4000 4190 60  0001 C CNN "Manufacturer Part Number"
-F 7 "Digikey" H 4300 4490 60  0001 C CNN "2nd Source"
-F 8 "Kemet" H 3900 4090 60  0001 C CNN "Manufacturer"
-F 9 "1457504" H 4200 4390 60  0001 C CNN "1st Source Part Number"
-	1    3800 4050
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	2000 3850 2300 3850
-Wire Wire Line
-	8600 4300 2700 4300
-$Comp
 L DIODE_RS07J-GS18 D201
 U 1 1 5896E2A2
 P 1900 3850
@@ -375,4 +287,175 @@ F 9 "Vishay Semiconductor Diodes Division" H 2020 3970 60  0001 C CNN "Manufactu
 	1    1900 3850
 	1    0    0    -1  
 $EndComp
+$Comp
+L SCHOTTKY_DIODE_V40PW10C D204
+U 1 1 5A0333DC
+P 2050 2900
+F 0 "D204" H 2050 3247 60  0000 C CNN
+F 1 "SCHOTTKY_DIODE_V40PW10C" H 2050 3141 60  0000 C CNN
+F 2 "usevolt:SlimDPAK" H 1850 2550 60  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2245239.pdf?_ga=2.16591231.874534928.1505194133-1862443086.1504075057" H 1850 2550 60  0001 C CNN
+F 4 "2535169" H 2400 3500 60  0001 C CNN "1st Source Part Number"
+F 5 "Digikey" H 2500 3600 60  0001 C CNN "2nd Source"
+F 6 "Farnell" H 2300 3400 60  0001 C CNN "1st Source"
+F 7 "V40PW10CHM3/I" H 2200 3300 60  0001 C CNN "Manufacturer Part Number"
+F 8 "V40PW10CHM3/IGICT-ND" H 2600 3700 60  0001 C CNN "2nd Source Part Number"
+F 9 "VISHAY" H 2100 3200 60  0001 C CNN "Manufacturer"
+	1    2050 2900
+	1    0    0    -1  
+$EndComp
+$Comp
+L SCHOTTKY_DIODE_V40PW10C D205
+U 1 1 5A033465
+P 2050 3350
+F 0 "D205" H 2050 3697 60  0000 C CNN
+F 1 "SCHOTTKY_DIODE_V40PW10C" H 2050 3591 60  0000 C CNN
+F 2 "usevolt:SlimDPAK" H 1850 3000 60  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/2245239.pdf?_ga=2.16591231.874534928.1505194133-1862443086.1504075057" H 1850 3000 60  0001 C CNN
+F 4 "2535169" H 2400 3950 60  0001 C CNN "1st Source Part Number"
+F 5 "Digikey" H 2500 4050 60  0001 C CNN "2nd Source"
+F 6 "Farnell" H 2300 3850 60  0001 C CNN "1st Source"
+F 7 "V40PW10CHM3/I" H 2200 3750 60  0001 C CNN "Manufacturer Part Number"
+F 8 "V40PW10CHM3/IGICT-ND" H 2600 4150 60  0001 C CNN "2nd Source Part Number"
+F 9 "VISHAY" H 2100 3650 60  0001 C CNN "Manufacturer"
+	1    2050 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8000 4300 8000 4250
+Wire Wire Line
+	6850 4300 6850 4150
+Connection ~ 8000 4300
+Wire Wire Line
+	6200 4300 6200 4150
+Connection ~ 6850 4300
+Wire Wire Line
+	5550 4300 5550 4050
+Connection ~ 6200 4300
+Wire Wire Line
+	3800 4300 3800 4150
+Connection ~ 5550 4300
+Wire Wire Line
+	3400 4300 3400 4150
+Connection ~ 3800 4300
+Wire Wire Line
+	2800 4150 2800 4500
+Connection ~ 3400 4300
+Connection ~ 2800 3850
+Connection ~ 3400 3850
+Wire Wire Line
+	8600 4300 8600 4150
+Wire Wire Line
+	8600 3600 8600 3850
+Wire Wire Line
+	8600 3850 8400 3850
+Wire Wire Line
+	6700 3850 7600 3850
+Connection ~ 6850 3850
+Wire Wire Line
+	5550 3850 6300 3850
+Connection ~ 6200 3850
+Wire Wire Line
+	6000 3950 6000 3850
+Connection ~ 6000 3850
+Wire Wire Line
+	5700 3950 5550 3950
+Wire Wire Line
+	5550 3750 6850 3750
+Wire Wire Line
+	6850 3600 6850 3850
+Connection ~ 6850 3750
+Wire Wire Line
+	1350 3850 1700 3850
+Wire Wire Line
+	3800 3700 4550 3700
+Wire Wire Line
+	4550 3700 4550 3750
+Wire Wire Line
+	7050 3600 6850 3600
+Wire Wire Line
+	8750 3600 8600 3600
+Connection ~ 2800 4300
+Wire Wire Line
+	3800 2300 3800 2100
+Wire Wire Line
+	4300 2150 4300 2350
+Wire Wire Line
+	3800 3850 3800 3700
+Connection ~ 1500 3850
+Wire Wire Line
+	2700 3850 3800 3850
+Wire Wire Line
+	2000 3850 2300 3850
+Wire Wire Line
+	2700 4300 8600 4300
+Wire Wire Line
+	2450 2850 3350 2850
+Wire Wire Line
+	2800 2850 2800 3300
+Wire Wire Line
+	2800 3300 2450 3300
+Connection ~ 2800 2850
+Wire Wire Line
+	1500 2800 1500 3850
+Wire Wire Line
+	1500 2800 1650 2800
+Wire Wire Line
+	1650 2900 1500 2900
+Connection ~ 1500 2900
+Wire Wire Line
+	1650 3250 1500 3250
+Connection ~ 1500 3250
+Wire Wire Line
+	1500 3350 1650 3350
+Connection ~ 1500 3350
+$Comp
+L DIODE_TVS_TPSMD28A D206
+U 1 1 5A0E0FEE
+P 3000 3150
+F 0 "D206" V 3092 3082 45  0000 R CNN
+F 1 "DIODE_TVS_TPSMD28A" V 3008 3082 45  0000 R CNN
+F 2 "usevolt:DO-214AB" H 3030 3300 20  0001 C CNN
+F 3 "http://www.littelfuse.com/~/media/electronics/datasheets/tvs_diodes/littelfuse_tvs_diode_tpsmd_datasheet.pdf.pdf" H 3110 3160 60  0001 C CNN
+F 4 "Digi-Key" H 3410 3460 60  0001 C CNN "1st Source"
+F 5 "Littlefuse" H 3210 3260 60  0001 C CNN "Manufacturer"
+F 6 "TPSMD28A" H 3310 3360 60  0001 C CNN "Manufacturer Part Number"
+F 7 "F6570CT-ND" H 3510 3560 60  0001 C CNN "1st Source Part Number"
+	1    3000 3150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3000 2950 3000 2850
+Connection ~ 3000 2850
+$Comp
+L GND #PWR202
+U 1 1 5A0E10EA
+P 3000 3350
+F 0 "#PWR202" H 3000 3100 50  0001 C CNN
+F 1 "GND" H 3005 3177 50  0000 C CNN
+F 2 "" H 3000 3350 50  0000 C CNN
+F 3 "" H 3000 3350 50  0000 C CNN
+	1    3000 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3000 3350 3000 3250
+$Comp
+L CAP_EEE-FK1H470P C202
+U 1 1 5A0E1265
+P 3800 4050
+F 0 "C202" V 3708 4153 45  0000 L CNN
+F 1 "CAP_EEE-FK1H470P" V 3792 4153 45  0000 L CNN
+F 2 "usevolt:CAP_EEE-FK1H470P" H 3830 4200 20  0001 C CNN
+F 3 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+ABA0120+EEEFK1H470P+7+WW" H 3800 3990 60  0001 C CNN
+F 4 "667-EEE-FK1H470P" H 4400 4590 60  0001 C CNN "2nd Source Part Number"
+F 5 "Digi-Key" H 4100 4290 60  0001 C CNN "1st Source"
+F 6 "EEE-FK1H470P" H 4000 4190 60  0001 C CNN "Manufacturer Part Number"
+F 7 "Mouser" H 4300 4490 60  0001 C CNN "2nd Source"
+F 8 "Panasonic Electronic Components" H 3900 4090 60  0001 C CNN "Manufacturer"
+F 9 "PCE3815CT-ND" H 4200 4390 60  0001 C CNN "1st Source Part Number"
+	1    3800 4050
+	0    1    1    0   
+$EndComp
+Connection ~ 3800 3850
 $EndSCHEMATC
