@@ -30,7 +30,6 @@ void init(dev_st* me) {
 	if (uv_memory_load()) {
 		// initialize default settings
 		this->beacon_enabled = 0;
-		this->oilcooler_trigger_temp = OIL_TEMP_DEFAULT_TRIGGER_VALUE_C;
 
 		uv_memory_save();
 	}
@@ -41,7 +40,6 @@ void init(dev_st* me) {
 	this->last_wiper_speed = this->wiper_speed;
 	this->cooler_p = 0;
 	this->esb.oil_temp = 0;
-	uv_hysteresis_init(&this->oil_temp, this->oilcooler_trigger_temp, OIL_TEMP_HYSTERESIS_C, false);
 	this->fsb.emcy = 0;
 
 	uv_output_init(&this->drive_light, DRIVE_LIGHT_SENSE_CHN, DRIVE_LIGHT_IO,
@@ -66,9 +64,6 @@ void init(dev_st* me) {
 	uv_output_init(&this->cooler, COOLER_SENSE_CHN, COOLER_IO,
 			SENSE_MOHM, 0, COOLER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_COOLER_OVERCURRENT, CSB_EMCY_COOLER_FAULT);
-	uv_output_init(&this->oilcooler, OIL_COOLER_SENSE_CHN, OIL_COOLER_IO,
-			SENSE_MOHM, 0, OILCOOLER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
-			CSB_EMCY_OILCOOLER_OVERCURRENT, CSB_EMCY_OILCOOLER_FAULT);
 
 	uv_gpio_init_input(WIPER_SENSOR_IO, PULL_DOWN_ENABLED);
 	uv_gpio_init_input(COOLER_P_IO, PULL_DOWN_ENABLED);
@@ -99,7 +94,6 @@ void step(void* me) {
 		uv_output_step(&this->beacon, step_ms);
 		uv_output_step(&this->wiper, step_ms);
 		uv_output_step(&this->cooler, step_ms);
-		uv_output_step(&this->oilcooler, step_ms);
 
 		this->total_current = this->drive_light.current +
 				this->work_light.current +
@@ -107,13 +101,18 @@ void step(void* me) {
 				this->in_light.current +
 				this->beacon.current +
 				this->wiper.current +
-				this->cooler.current +
-				this->oilcooler.current;
+				this->cooler.current;
 
 		// back light
 		uv_output_set_state(&this->back_light,
 				uv_output_get_state(&this->work_light));
 
+		static bool last_wiper = 0;
+
+		// helps debugginf wiper logic
+		if (uv_gpio_get(WIPER_SENSOR_IO) != last_wiper) {
+			//printf("wiper: %u\n", uv_gpio_get(WIPER_SENSOR_IO));
+		}
 		// wiper logic
 		// wiper is "going away" from home
 		if (this->wiper_state == WIPER_STATE_ON) {
@@ -173,11 +172,8 @@ void step(void* me) {
 		}
 		this->last_wiper_speed = this->wiper_speed;
 
-		// oil cooler control
-		uv_hysteresis_set_trigger_value(&this->oil_temp, this->oilcooler_trigger_temp);
-		uv_hysteresis_step(&this->oil_temp, this->esb.oil_temp);
-		uv_output_set_state(&this->oilcooler, (uv_hysteresis_get_output(&this->oil_temp)) ?
-				OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
+		last_wiper = uv_gpio_get(WIPER_SENSOR_IO);
+
 
 		// cooler P
 		this->cooler_p = uv_gpio_get(COOLER_P_IO);
@@ -186,7 +182,6 @@ void step(void* me) {
 		if (this->fsb.emcy) {
 			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
 			uv_output_set_state(&this->cooler, OUTPUT_STATE_OFF);
-			uv_output_set_state(&this->oilcooler, OUTPUT_STATE_OFF);
 		}
 
 		uv_rtos_task_delay(step_ms);

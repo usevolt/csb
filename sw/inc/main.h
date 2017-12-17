@@ -31,10 +31,8 @@
 
 #define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
-#define WIPER_HOME_STATE				1
+#define WIPER_HOME_STATE				0
 
-#define OIL_TEMP_HYSTERESIS_C				10
-#define OIL_TEMP_DEFAULT_TRIGGER_VALUE_C	70
 
 
 
@@ -54,7 +52,6 @@ typedef struct _dev_st {
 	uv_output_st beacon;
 	uv_output_st wiper;
 	uv_output_st cooler;
-	uv_output_st oilcooler;
 
 
 	uint8_t wiper_speed;
@@ -78,7 +75,6 @@ typedef struct _dev_st {
 
 	uv_data_start_t data_start;
 	struct {
-		int8_t oilcooler_trigger_temp;
 		uint8_t beacon_enabled;
 	};
 	uv_data_end_t data_end;

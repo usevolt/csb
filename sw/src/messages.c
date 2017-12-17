@@ -158,32 +158,11 @@ canopen_object_st obj_dict[] = {
 				.data_ptr = &dev.cooler_p
 		},
 		{
-				.main_index = CSB_OILCOOLER_STATUS_INDEX,
-				.sub_index = CSB_OILCOOLER_STATUS_SUBINDEX,
-				.type = CSB_OILCOOLER_STATUS_TYPE,
-				.permissions = CSB_OILCOOLER_STATUS_PERMISSIONS,
-				.data_ptr = &dev.oilcooler.state
-		},
-		{
-				.main_index = CSB_OILCOOLER_CURRENT_INDEX,
-				.sub_index = CSB_OILCOOLER_CURRENT_SUBINDEX,
-				.type = CSB_OILCOOLER_CURRENT_TYPE,
-				.permissions = CSB_OILCOOLER_CURRENT_PERMISSIONS,
-				.data_ptr = &dev.oilcooler.current
-		},
-		{
 				.main_index = CSB_ESB_OIL_TEMP_INDEX,
 				.sub_index = CSB_ESB_OIL_TEMP_SUBINDEX,
 				.type = CSB_ESB_OIL_TEMP_TYPE,
 				.permissions = CSB_ESB_OIL_TEMP_PERMISSIONS,
 				.data_ptr = &dev.esb.oil_temp
-		},
-		{
-				.main_index = CSB_OILCOOLER_TRIGGER_INDEX,
-				.sub_index = CSB_OILCOOLER_TRIGGER_SUBINDEX,
-				.type = CSB_OILCOOLER_TRIGGER_TYPE,
-				.permissions = CSB_OILCOOLER_TRIGGER_PERMISSIONS,
-				.data_ptr = &dev.oilcooler_trigger_temp
 		},
 		{
 				.main_index = CSB_FSB_EMCY_INDEX,
@@ -250,13 +229,6 @@ const uv_command_st terminal_commands[] = {
 				.instructions = "Sets the cooler output state.\n"
 						"Usage: cooler (1/0)",
 				.callback = &cooler_callb
-		},
-		{
-				.id = CMD_OILC,
-				.str = "oilc",
-				.instructions = "Sets the oil cooler trigger temperature.\n"
-						"Usage: oilc <-127...127>",
-				.callback = &oilc_callb
 		},
 		{
 				.id = CMD_STAT,
@@ -344,12 +316,6 @@ void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 			(unsigned int) this->cooler.current);
 }
 
-void oilc_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
-	if (args) {
-		this->oilcooler_trigger_temp = argv[0].number;
-	}
-	printf("Oil cooler trigger temp: %i\n", this->oilcooler_trigger_temp);
-}
 
 
 static void stat_output(uv_output_st *output, const char *output_name) {
@@ -368,7 +334,6 @@ void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv
 	stat_output(&this->beacon, "Beacon");
 	stat_output(&this->cooler, "Cooler");
 	stat_output(&this->wiper, "Wiper");
-	stat_output(&this->oilcooler, "Oil Cooler");
 	printf("Oil temp: %i\n, oil cooler hysteresis output: %u\n",
 			this->esb.oil_temp, uv_hysteresis_get_output(&this->oil_temp));
 
