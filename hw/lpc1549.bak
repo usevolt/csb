@@ -10,7 +10,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 9
+Sheet 3 8
 Title ""
 Date ""
 Rev ""
@@ -567,14 +567,6 @@ $EndComp
 Wire Wire Line
 	10100 5600 10100 5700
 Connection ~ 10100 5700
-Wire Wire Line
-	6400 2350 7350 2350
-Text HLabel 7350 2350 2    60   Input ~ 0
-OILCOOLER_SENSE
-Wire Wire Line
-	6400 2250 7350 2250
-Text HLabel 7350 2250 2    60   Output ~ 0
-OILCOOLER
 $Comp
 L LPC1549JBD64 U301
 U 1 1 5A00BF20
