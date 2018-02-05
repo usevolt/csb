@@ -20,6 +20,9 @@ dev_st dev;
 #define this ((dev_st*) &dev)
 
 
+#define VND5050_CURRENT_AMPL_UA		4173
+#define VN5E01_CURRENT_AMPL_UA		13923
+
 
 
 void init(dev_st* me) {
@@ -43,27 +46,35 @@ void init(dev_st* me) {
 	this->fsb.emcy = 0;
 
 	uv_output_init(&this->drive_light, DRIVE_LIGHT_SENSE_CHN, DRIVE_LIGHT_IO,
-			SENSE_MOHM, 0, DRIVE_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VN5E01_CURRENT_AMPL_UA, DRIVE_LIGHT_MAX_CURRENT_MA,
+			DRIVE_LIGHT_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_DRIVE_LIGHT_OVERCURRENT, CSB_EMCY_DRIVE_LIGHT_FAULT);
 	uv_output_init(&this->work_light, WORK_LIGHT_SENSE_CHN, WORK_LIGHT_IO,
-			SENSE_MOHM, 0, WORK_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VN5E01_CURRENT_AMPL_UA, WORK_LIGHT_MAX_CURRENT_MA,
+			WORK_LIGHT_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_WORK_LIGHT_OVERCURRENT, CSB_EMCY_WORK_LIGHT_FAULT);
 	uv_output_init(&this->back_light, BACK_LIGHT_SENSE_CHN, BACK_LIGHT_IO,
-			SENSE_MOHM, 0, BACK_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VND5050_CURRENT_AMPL_UA, BACK_LIGHT_MAX_CURRENT_MA,
+			BACK_LIGHT_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_BACK_LIGHT_OVERCURRENT, CSB_EMCY_BACK_LIGHT_FAULT);
 	uv_output_init(&this->in_light, IN_LIGHT_SENSE_CHN, IN_LIGHT_IO,
-			SENSE_MOHM, 0, IN_LIGHT_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VND5050_CURRENT_AMPL_UA, IN_LIGHT_MAX_CURRENT_MA,
+			IN_LIGHT_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_IN_LIGHT_OVERCURRENT, CSB_EMCY_IN_LIGHT_FAULT);
 	uv_output_set_state(&this->in_light, OUTPUT_STATE_ON);
 	uv_output_init(&this->beacon, BEACON_SENSE_CHN, BEACON_IO,
-			SENSE_MOHM, 0, BEACON_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VND5050_CURRENT_AMPL_UA, BEACON_MAX_CURRENT_MA,
+			BEACON_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_BEACON_OVERCURRENT, CSB_EMCY_BEACON_FAULT);
 	uv_output_init(&this->wiper, WIPER_SENSE_CHN, WIPER_IO,
-			SENSE_MOHM, 0, WIPER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VND5050_CURRENT_AMPL_UA, WIPER_MAX_CURRENT_MA,
+			WIPER_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_WIPER_OVERCURRENT, CSB_EMCY_WIPER_FAULT);
 	uv_output_init(&this->cooler, COOLER_SENSE_CHN, COOLER_IO,
-			SENSE_MOHM, 0, COOLER_MAX_CURRENT_MA, OUTPUT_AVG_COUNT,
+			VN5E01_CURRENT_AMPL_UA, COOLER_MAX_CURRENT_MA,
+			COOLER_FAULT_CURRENT_MA, OUTPUT_AVG_COUNT,
 			CSB_EMCY_COOLER_OVERCURRENT, CSB_EMCY_COOLER_FAULT);
+	uv_output_set_state(&this->cooler, OUTPUT_STATE_ON);
 
 	uv_gpio_init_input(WIPER_SENSOR_IO, PULL_DOWN_ENABLED);
 	uv_gpio_init_input(COOLER_P_IO, PULL_DOWN_ENABLED);
@@ -95,6 +106,11 @@ void step(void* me) {
 		uv_output_step(&this->wiper, step_ms);
 		uv_output_step(&this->cooler, step_ms);
 
+		// cooler is always on unless there's a fault
+		if (uv_output_get_state(&this->cooler) == OUTPUT_STATE_OFF) {
+			uv_output_set_state(&this->cooler, OUTPUT_STATE_ON);
+		}
+
 		this->total_current = this->drive_light.current +
 				this->work_light.current +
 				this->back_light.current +
@@ -109,7 +125,7 @@ void step(void* me) {
 
 		static bool last_wiper = 0;
 
-		// helps debugginf wiper logic
+		// helps debugging wiper logic
 		if (uv_gpio_get(WIPER_SENSOR_IO) != last_wiper) {
 			//printf("wiper: %u\n", uv_gpio_get(WIPER_SENSOR_IO));
 		}
@@ -118,12 +134,12 @@ void step(void* me) {
 		if (this->wiper_state == WIPER_STATE_ON) {
 			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
 
-			if (uv_delay(step_ms, &this->wiper_delay) ||
+			if (uv_delay(&this->wiper_delay, step_ms) ||
 					uv_delay_has_ended(&this->wiper_delay)) {
 
 				if (uv_gpio_get(WIPER_SENSOR_IO) != WIPER_HOME_STATE) {
 					// wiper is now on the furthest position
-					uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+					uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
 					this->wiper_state = WIPER_STATE_RETURN_HOME;
 				}
 			}
@@ -132,15 +148,14 @@ void step(void* me) {
 		else if (this->wiper_state == WIPER_STATE_RETURN_HOME) {
 			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
 
-			if (uv_delay(step_ms, &this->wiper_delay) ||
+			if (uv_delay(&this->wiper_delay, step_ms) ||
 					uv_delay_has_ended(&this->wiper_delay)) {
 
 				if (uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) {
 					// wiper is now home, wait for the delay specified by wiper speed
-					uv_delay_init(WIPER_SLOWEST_DELAY_MS -
+					uv_delay_init(&this->wiper_delay, WIPER_SLOWEST_DELAY_MS -
 							(uint64_t) WIPER_SLOWEST_DELAY_MS *
-							this->wiper_speed / (CSB_WIPER_MAX_SPEED),
-							&this->wiper_delay);
+							this->wiper_speed / (CSB_WIPER_MAX_SPEED));
 					this->wiper_state = WIPER_STATE_WAIT;
 				}
 			}
@@ -151,9 +166,9 @@ void step(void* me) {
 			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
 
 			if (this->wiper_speed) {
-				if (uv_delay(step_ms, &this->wiper_delay) ||
+				if (uv_delay(&this->wiper_delay, step_ms) ||
 						(this->wiper_speed != this->last_wiper_speed)) {
-					uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+					uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
 					this->wiper_state = WIPER_STATE_ON;
 				}
 			}
@@ -166,7 +181,7 @@ void step(void* me) {
 			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
 
 			if (this->wiper_speed) {
-				uv_delay_init(WIPER_ON_DELAY_MS, &this->wiper_delay);
+				uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
 				this->wiper_state = WIPER_STATE_ON;
 			}
 		}

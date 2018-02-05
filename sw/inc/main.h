@@ -20,14 +20,22 @@
 #define OUTPUT_AVG_COUNT				40
 
 
-#define DRIVE_LIGHT_MAX_CURRENT_MA		5000
-#define WORK_LIGHT_MAX_CURRENT_MA		5000
+#define DRIVE_LIGHT_MAX_CURRENT_MA		10000
+#define DRIVE_LIGHT_FAULT_CURRENT_MA	15000
+#define WORK_LIGHT_MAX_CURRENT_MA		10000
+#define WORK_LIGHT_FAULT_CURRENT_MA		15000
 #define BACK_LIGHT_MAX_CURRENT_MA		5000
-#define IN_LIGHT_MAX_CURRENT_MA			5000
-#define BEACON_MAX_CURRENT_MA			5000
+#define BACK_LIGHT_FAULT_CURRENT_MA		10000
+#define IN_LIGHT_MAX_CURRENT_MA			4000
+#define IN_LIGHT_FAULT_CURRENT_MA		5000
+#define BEACON_MAX_CURRENT_MA			4000
+#define BEACON_FAULT_CURRENT_MA			5000
 #define WIPER_MAX_CURRENT_MA			5000
+#define WIPER_FAULT_CURRENT_MA			10000
 #define COOLER_MAX_CURRENT_MA			15000
-#define OILCOOLER_MAX_CURRENT_MA		10000
+#define COOLER_FAULT_CURRENT_MA			20000
+#define OILCOOLER_MAX_CURRENT_MA		20000
+#define OILCOOLER_FAULT_CURRENT_MA		25000
 
 #define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
@@ -56,7 +64,7 @@ typedef struct _dev_st {
 
 	uint8_t wiper_speed;
 	uint8_t last_wiper_speed;
-	int wiper_delay;
+	uv_delay_st wiper_delay;
 	wiper_states_e wiper_state;
 
 	// cooler compressor input signal from the cooler
