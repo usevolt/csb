@@ -334,7 +334,7 @@ void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv
 	stat_output(&this->beacon, "Beacon");
 	stat_output(&this->cooler, "Cooler");
 	stat_output(&this->wiper, "Wiper");
-	printf("Oil temp: %i\n, oil cooler hysteresis output: %u\n",
+	printf("Oil temp: %i, oil cooler hysteresis output: %u\n",
 			this->esb.oil_temp, uv_hysteresis_get_output(&this->oil_temp));
 
 	printf("Wiper speed: %i\nWiper pos: %u\nCooler P: %i\n"

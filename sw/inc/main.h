@@ -17,7 +17,7 @@
 
 
 #define SENSE_MOHM						2
-#define OUTPUT_AVG_COUNT				40
+#define OUTPUT_AVG_COUNT				10
 
 
 #define DRIVE_LIGHT_MAX_CURRENT_MA		10000
