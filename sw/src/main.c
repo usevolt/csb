@@ -40,6 +40,8 @@ void init(dev_st* me) {
 	this->total_current = 0;
 	this->wiper_state = WIPER_STATE_OFF;
 	this->wiper_speed = 0;
+	this->wiper_req = 0;
+	uv_delay_init(&this->wiper_req_delay, WIPER_REQ_DELAY_MS);
 	this->last_wiper_speed = this->wiper_speed;
 	this->cooler_p = 0;
 	this->esb.oil_temp = 0;
@@ -125,11 +127,35 @@ void step(void* me) {
 
 		static bool last_wiper = 0;
 
+
+
+		// ** wiper logic **
 		// helps debugging wiper logic
 		if (uv_gpio_get(WIPER_SENSOR_IO) != last_wiper) {
 			//printf("wiper: %u\n", uv_gpio_get(WIPER_SENSOR_IO));
 		}
-		// wiper logic
+		// wiper speed request handling
+		uv_delay(&this->wiper_req_delay, step_ms);
+		if (this->wiper_req) {
+			// user has made a wiper request. Wiper request either swings
+			// wiper once or increases the wiper speed if pressed more than
+			// once within the time delay.
+			this->wiper_req = 0;
+			uv_canopen_pdo_mapping_update(CSB_WIPER_SPEED_INDEX, CSB_WIPER_SPEED_SUBINDEX);
+			if (!uv_delay_has_ended(&this->wiper_req_delay)) {
+				// increase wiper speed
+				this->wiper_speed = this->wiper_speed + CSB_WIPER_MAX_SPEED / 4;
+				if (this->wiper_speed > CSB_WIPER_MAX_SPEED) {
+					this->wiper_speed = 0;
+				}
+			}
+			else {
+				// sweep wiper only once
+				uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
+				this->wiper_state = WIPER_STATE_ON;
+			}
+			uv_delay_init(&this->wiper_req_delay, WIPER_REQ_DELAY_MS);
+		}
 		// wiper is "going away" from home
 		if (this->wiper_state == WIPER_STATE_ON) {
 			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
@@ -195,8 +221,12 @@ void step(void* me) {
 
 		// emcy logic
 		if (this->fsb.emcy) {
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
-			uv_output_set_state(&this->cooler, OUTPUT_STATE_OFF);
+			uv_output_disable(&this->wiper);
+			uv_output_disable(&this->cooler);
+		}
+		else {
+			uv_output_enable(&this->wiper);
+			uv_output_enable(&this->cooler);
 		}
 
 		uv_rtos_task_delay(step_ms);

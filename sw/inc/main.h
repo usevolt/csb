@@ -40,7 +40,7 @@
 #define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
 #define WIPER_HOME_STATE				0
-
+#define WIPER_REQ_DELAY_MS				200
 
 
 
@@ -50,6 +50,7 @@ typedef enum {
 	WIPER_STATE_RETURN_HOME,
 	WIPER_STATE_WAIT
 } wiper_states_e;
+
 
 typedef struct _dev_st {
 
@@ -63,6 +64,8 @@ typedef struct _dev_st {
 
 
 	uint8_t wiper_speed;
+	int8_t wiper_req;
+	uv_delay_st wiper_req_delay;
 	uint8_t last_wiper_speed;
 	uv_delay_st wiper_delay;
 	wiper_states_e wiper_state;

@@ -137,6 +137,13 @@ canopen_object_st obj_dict[] = {
 				.data_ptr = &dev.wiper_speed
 		},
 		{
+				.main_index = CSB_WIPER_REQ_INDEX,
+				.sub_index = CSB_WIPER_REQ_SUBINDEX,
+				.type = CSB_WIPER_REQ_TYPE,
+				.permissions = CSB_WIPER_REQ_PERMISSIONS,
+				.data_ptr = &dev.wiper_req
+		},
+		{
 				.main_index = CSB_COOLER_STATUS_INDEX,
 				.sub_index = CSB_COOLER_STATUS_SUBINDEX,
 				.type = CSB_COOLER_STATUS_TYPE,
