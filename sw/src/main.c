@@ -142,7 +142,8 @@ void step(void* me) {
 			// once within the time delay.
 			this->wiper_req = 0;
 			uv_canopen_pdo_mapping_update(CSB_WIPER_SPEED_INDEX, CSB_WIPER_SPEED_SUBINDEX);
-			if (!uv_delay_has_ended(&this->wiper_req_delay)) {
+			if ((this->wiper_speed >= (CSB_WIPER_MAX_SPEED - (CSB_WIPER_MAX_SPEED % 4))) ||
+					!uv_delay_has_ended(&this->wiper_req_delay)) {
 				// increase wiper speed
 				this->wiper_speed = this->wiper_speed + CSB_WIPER_MAX_SPEED / 4;
 				if (this->wiper_speed > CSB_WIPER_MAX_SPEED) {
