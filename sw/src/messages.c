@@ -144,6 +144,13 @@ canopen_object_st obj_dict[] = {
 				.data_ptr = &dev.wiper_req
 		},
 		{
+				.main_index = CSB_WIPER_POL_INDEX,
+				.sub_index = CSB_WIPER_POL_SUBINDEX,
+				.type = CSB_WIPER_POL_TYPE,
+				.permissions = CSB_WIPER_POL_PERMISSIONS,
+				.data_ptr = &dev.wiper_pol
+		},
+		{
 				.main_index = CSB_COOLER_STATUS_INDEX,
 				.sub_index = CSB_COOLER_STATUS_SUBINDEX,
 				.type = CSB_COOLER_STATUS_TYPE,
@@ -226,8 +233,9 @@ const uv_command_st terminal_commands[] = {
 		{
 				.id = CMD_WIPER,
 				.str = "wiper",
-				.instructions = "Sets the wiper speed.\n"
-						"Usage: wiper (0...100)",
+				.instructions = "Sets the wiper speed. Can also be used to set \n"
+						"the wiper home position polarity.\n"
+						"Usage: wiper (\"pol\"/0...100) (polarity)",
 				.callback = &wiper_callb
 		},
 		{
@@ -308,10 +316,27 @@ void beacon_callb(void *me, unsigned int cmd, unsigned int args, argument_st *ar
 
 void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
 	if (args) {
-		this->wiper_speed = argv[0].number;
+		if (argv[0].type == ARG_INTEGER) {
+			this->wiper_speed = argv[0].number;
+		}
+		else {
+			if (strcmp(argv[0].str, "pol") == 0) {
+				if (args >= 2) {
+					if (argv[1].type == ARG_INTEGER) {
+						this->wiper_pol = argv[1].number;
+					}
+					else {
+						printf("Wiper polarity has to be integer\n");
+					}
+				}
+			}
+			else {
+				printf("Unknown wiper command '%s'\n", argv[0].str);
+			}
+		}
 	}
-	printf("wiper state: %u, current: %i, speed: %u\n", this->wiper.state,
-			(unsigned int) this->wiper.current, this->wiper_speed);
+	printf("wiper state: %u, current: %i, speed: %u polarity: %u\n", this->wiper.state,
+			(unsigned int) this->wiper.current, this->wiper_speed, this->wiper_pol);
 }
 
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {

@@ -33,6 +33,7 @@ void init(dev_st* me) {
 	if (uv_memory_load()) {
 		// initialize default settings
 		this->beacon_enabled = 0;
+		this->wiper_pol = WIPER_HOME_STATE;
 
 		uv_memory_save();
 	}
