@@ -124,7 +124,7 @@ void step(void* me) {
 
 		// back light
 		uv_output_set_state(&this->back_light,
-				uv_output_get_state(&this->work_light));
+				uv_output_get_state(&this->drive_light));
 
 		static bool last_wiper = 0;
 

@@ -29,6 +29,7 @@ BINARY := csb
 # List of include directories
 INCLUDEDIRS := 	-I"inc/" \
 				-I"hal/uv_hal/inc" \
+				-I"hal/uv_hal/inc/output" \
 				-I"hal/lpc_chip_15xx/inc" \
 				-I"hal/uv_hal/freertos/include" \
 				-I"hal/uv_hal/freertos/portable/GCC/ARM_CM3" \
@@ -36,6 +37,7 @@ INCLUDEDIRS := 	-I"inc/" \
 
 SOURCEDIRS := src \
 				hal/uv_hal/src \
+				hal/uv_hal/src/output \
 				hal/uv_hal/freertos \
 				hal/uv_hal/src/canopen \
 				hal/uv_hal/freertos/portable/GCC/ARM_CM3 \

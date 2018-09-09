@@ -14,6 +14,7 @@
 #include <string.h>
 #include <uv_timer.h>
 #include <uv_utilities.h>
+#include <uv_rtos.h>
 
 extern dev_st dev;
 
