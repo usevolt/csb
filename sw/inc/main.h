@@ -40,9 +40,11 @@
 #define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
 #define WIPER_HOME_STATE				0
+#define WIPER_MANUAL_DEF				0
 #define WIPER_REQ_DELAY_MS				1500
 
 
+#define IGNKEY_DELAY_MS					10000
 
 typedef enum {
 	WIPER_STATE_OFF = 0,
@@ -76,19 +78,26 @@ typedef struct _dev_st {
 	uv_hysteresis_st oil_temp;
 
 	struct {
-		int8_t oil_temp;
-	} esb;
-	struct {
 		uint8_t emcy;
+		uint8_t ignkey;
+		uint8_t seat_sw;
+		uint8_t door_sw1;
+		uint8_t door_sw2;
 	} fsb;
+
+	uv_delay_st ignkey_delay;
 
 	uint16_t total_current;
 
+
 	uv_data_start_t data_start;
+
 	struct {
 		uint8_t beacon_enabled;
 	};
 	uint8_t wiper_pol;
+	uint8_t wiper_manual;
+
 	uv_data_end_t data_end;
 
 

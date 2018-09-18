@@ -25,6 +25,8 @@ dev_st dev;
 
 
 
+
+
 void init(dev_st* me) {
 	//init terminal and pass application terminal commands array as a parameter
 	uv_terminal_init(terminal_commands, commands_size());
@@ -34,6 +36,7 @@ void init(dev_st* me) {
 		// initialize default settings
 		this->beacon_enabled = 0;
 		this->wiper_pol = WIPER_HOME_STATE;
+		this->wiper_manual = WIPER_MANUAL_DEF;
 
 		uv_memory_save();
 	}
@@ -45,8 +48,11 @@ void init(dev_st* me) {
 	uv_delay_init(&this->wiper_req_delay, WIPER_REQ_DELAY_MS);
 	this->last_wiper_speed = this->wiper_speed;
 	this->cooler_p = 0;
-	this->esb.oil_temp = 0;
+	this->fsb.seat_sw = 0;
+	this->fsb.door_sw1 = 0;
+	this->fsb.door_sw2 = 0;
 	this->fsb.emcy = 0;
+	uv_delay_init(&this->ignkey_delay, IGNKEY_DELAY_MS);
 
 	uv_output_init(&this->drive_light, DRIVE_LIGHT_SENSE_CHN, DRIVE_LIGHT_IO,
 			VN5E01_CURRENT_AMPL_UA, DRIVE_LIGHT_MAX_CURRENT_MA,
@@ -131,91 +137,106 @@ void step(void* me) {
 
 
 		// ** wiper logic **
-		// helps debugging wiper logic
-		if (uv_gpio_get(WIPER_SENSOR_IO) != last_wiper) {
-			//printf("wiper: %u\n", uv_gpio_get(WIPER_SENSOR_IO));
-		}
-		// wiper speed request handling
-		uv_delay(&this->wiper_req_delay, step_ms);
-		if (this->wiper_req) {
-			// user has made a wiper request. Wiper request either swings
-			// wiper once or increases the wiper speed if pressed more than
-			// once within the time delay.
-			this->wiper_req = 0;
-			uv_canopen_pdo_mapping_update(CSB_WIPER_SPEED_INDEX, CSB_WIPER_SPEED_SUBINDEX);
-			if ((this->wiper_speed >= (CSB_WIPER_MAX_SPEED - (CSB_WIPER_MAX_SPEED % 4))) ||
-					!uv_delay_has_ended(&this->wiper_req_delay)) {
-				// increase wiper speed
-				this->wiper_speed = this->wiper_speed + CSB_WIPER_MAX_SPEED / 4;
-				if (this->wiper_speed > CSB_WIPER_MAX_SPEED) {
+		if (this->wiper_manual) {
+			// manual wiper works just as is
+			if (this->wiper_req) {
+				this->wiper_req = 0;
+				if (this->wiper_speed) {
 					this->wiper_speed = 0;
 				}
+				else {
+					this->wiper_speed = CSB_WIPER_MAX_SPEED;
+				}
 			}
-			else {
-				// sweep wiper only once
-				uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
-				this->wiper_state = WIPER_STATE_ON;
-			}
-			uv_delay_init(&this->wiper_req_delay, WIPER_REQ_DELAY_MS);
+			uv_output_set_state(&this->wiper, this->wiper_speed ? OUTPUT_STATE_ON : OUTPUT_STATE_OFF);
 		}
-		// wiper is "going away" from home
-		if (this->wiper_state == WIPER_STATE_ON) {
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
-
-			if (uv_delay(&this->wiper_delay, step_ms) ||
-					uv_delay_has_ended(&this->wiper_delay)) {
-
-				if (uv_gpio_get(WIPER_SENSOR_IO) != WIPER_HOME_STATE) {
-					// wiper is now on the furthest position
+		else {
+			// helps debugging wiper logic
+			if (uv_gpio_get(WIPER_SENSOR_IO) != last_wiper) {
+				//printf("wiper: %u\n", uv_gpio_get(WIPER_SENSOR_IO));
+			}
+			// wiper speed request handling
+			uv_delay(&this->wiper_req_delay, step_ms);
+			if (this->wiper_req) {
+				// user has made a wiper request. Wiper request either swings
+				// wiper once or increases the wiper speed if pressed more than
+				// once within the time delay.
+				this->wiper_req = 0;
+				uv_canopen_pdo_mapping_update(CSB_WIPER_SPEED_INDEX, CSB_WIPER_SPEED_SUBINDEX);
+				if ((this->wiper_speed >= (CSB_WIPER_MAX_SPEED - (CSB_WIPER_MAX_SPEED % 4))) ||
+						!uv_delay_has_ended(&this->wiper_req_delay)) {
+					// increase wiper speed
+					this->wiper_speed = this->wiper_speed + CSB_WIPER_MAX_SPEED / 4;
+					if (this->wiper_speed > CSB_WIPER_MAX_SPEED) {
+						this->wiper_speed = 0;
+					}
+				}
+				else {
+					// sweep wiper only once
 					uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
-					this->wiper_state = WIPER_STATE_RETURN_HOME;
+					this->wiper_state = WIPER_STATE_ON;
 				}
+				uv_delay_init(&this->wiper_req_delay, WIPER_REQ_DELAY_MS);
 			}
-		}
-		// wiper is returning to home
-		else if (this->wiper_state == WIPER_STATE_RETURN_HOME) {
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+			// wiper is "going away" from home
+			if (this->wiper_state == WIPER_STATE_ON) {
+				uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
 
-			if (uv_delay(&this->wiper_delay, step_ms) ||
-					uv_delay_has_ended(&this->wiper_delay)) {
-
-				if (uv_gpio_get(WIPER_SENSOR_IO) == WIPER_HOME_STATE) {
-					// wiper is now home, wait for the delay specified by wiper speed
-					uv_delay_init(&this->wiper_delay, WIPER_SLOWEST_DELAY_MS -
-							(uint64_t) WIPER_SLOWEST_DELAY_MS *
-							this->wiper_speed / (CSB_WIPER_MAX_SPEED));
-					this->wiper_state = WIPER_STATE_WAIT;
-				}
-			}
-
-		}
-		// wiper is waiting for delay time to end
-		else if (this->wiper_state == WIPER_STATE_WAIT) {
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
-
-			if (this->wiper_speed) {
 				if (uv_delay(&this->wiper_delay, step_ms) ||
-						(this->wiper_speed != this->last_wiper_speed)) {
+						uv_delay_has_ended(&this->wiper_delay)) {
+
+					if (uv_gpio_get(WIPER_SENSOR_IO) != this->wiper_pol) {
+						// wiper is now on the furthest position
+						uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
+						this->wiper_state = WIPER_STATE_RETURN_HOME;
+					}
+				}
+			}
+			// wiper is returning to home
+			else if (this->wiper_state == WIPER_STATE_RETURN_HOME) {
+				uv_output_set_state(&this->wiper, OUTPUT_STATE_ON);
+
+				if (uv_delay(&this->wiper_delay, step_ms) ||
+						uv_delay_has_ended(&this->wiper_delay)) {
+
+					if (uv_gpio_get(WIPER_SENSOR_IO) == this->wiper_pol) {
+						// wiper is now home, wait for the delay specified by wiper speed
+						uv_delay_init(&this->wiper_delay, WIPER_SLOWEST_DELAY_MS -
+								(uint64_t) WIPER_SLOWEST_DELAY_MS *
+								this->wiper_speed / (CSB_WIPER_MAX_SPEED));
+						this->wiper_state = WIPER_STATE_WAIT;
+					}
+				}
+
+			}
+			// wiper is waiting for delay time to end
+			else if (this->wiper_state == WIPER_STATE_WAIT) {
+				uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+
+				if (this->wiper_speed) {
+					if (uv_delay(&this->wiper_delay, step_ms) ||
+							(this->wiper_speed != this->last_wiper_speed)) {
+						uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
+						this->wiper_state = WIPER_STATE_ON;
+					}
+				}
+				else {
+					this->wiper_state = WIPER_STATE_OFF;
+				}
+			}
+			// wiper is off
+			else {
+				uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+
+				if (this->wiper_speed) {
 					uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
 					this->wiper_state = WIPER_STATE_ON;
 				}
 			}
-			else {
-				this->wiper_state = WIPER_STATE_OFF;
-			}
-		}
-		// wiper is off
-		else {
-			uv_output_set_state(&this->wiper, OUTPUT_STATE_OFF);
+			this->last_wiper_speed = this->wiper_speed;
 
-			if (this->wiper_speed) {
-				uv_delay_init(&this->wiper_delay, WIPER_ON_DELAY_MS);
-				this->wiper_state = WIPER_STATE_ON;
-			}
+			last_wiper = uv_gpio_get(WIPER_SENSOR_IO);
 		}
-		this->last_wiper_speed = this->wiper_speed;
-
-		last_wiper = uv_gpio_get(WIPER_SENSOR_IO);
 
 
 		// cooler P
@@ -229,6 +250,18 @@ void step(void* me) {
 		else {
 			uv_output_enable(&this->wiper);
 			uv_output_enable(&this->cooler);
+		}
+		if (this->fsb.ignkey == FSB_IGNKEY_STATE_OFF) {
+			if (uv_delay(&this->ignkey_delay, step_ms)) {
+				// ignkey has been off for too long. Shut off cooler and wiper
+				this->wiper_speed = 0;
+				uv_output_set_state(&this->cooler, OUTPUT_STATE_OFF);
+				uv_output_step(&this->cooler, step_ms);
+				uv_rtos_task_delay(500);
+			}
+		}
+		else {
+			uv_delay_init(&this->ignkey_delay, IGNKEY_DELAY_MS);
 		}
 
 		uv_rtos_task_delay(step_ms);

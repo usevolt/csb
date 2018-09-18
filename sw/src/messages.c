@@ -152,6 +152,13 @@ canopen_object_st obj_dict[] = {
 				.data_ptr = &dev.wiper_pol
 		},
 		{
+				.main_index = CSB_WIPER_MANUAL_INDEX,
+				.sub_index = CSB_WIPER_MANUAL_SUBINDEX,
+				.type = CSB_WIPER_MANUAL_TYPE,
+				.permissions = CSB_WIPER_MANUAL_PERMISSIONS,
+				.data_ptr = &dev.wiper_manual
+		},
+		{
 				.main_index = CSB_COOLER_STATUS_INDEX,
 				.sub_index = CSB_COOLER_STATUS_SUBINDEX,
 				.type = CSB_COOLER_STATUS_TYPE,
@@ -173,18 +180,32 @@ canopen_object_st obj_dict[] = {
 				.data_ptr = &dev.cooler_p
 		},
 		{
-				.main_index = CSB_ESB_OIL_TEMP_INDEX,
-				.sub_index = CSB_ESB_OIL_TEMP_SUBINDEX,
-				.type = CSB_ESB_OIL_TEMP_TYPE,
-				.permissions = CSB_ESB_OIL_TEMP_PERMISSIONS,
-				.data_ptr = &dev.esb.oil_temp
+				.main_index = CSB_FSB_INDEX_OFFSET + FSB_IGNKEY_INDEX,
+				.sub_index = FSB_IGNKEY_SUBINDEX,
+				.type = FSB_IGNKEY_TYPE,
+				.permissions = FSB_IGNKEY_PERMISSIONS,
+				.data_ptr = &dev.fsb.ignkey
 		},
 		{
-				.main_index = CSB_FSB_EMCY_INDEX,
-				.sub_index = CSB_FSB_EMCY_SUBINDEX,
-				.type = CSB_FSB_EMCY_TYPE,
-				.permissions = CSB_FSB_EMCY_PERMISSIONS,
+				.main_index = CSB_FSB_INDEX_OFFSET + FSB_EMCY_INDEX,
+				.sub_index = FSB_EMCY_SUBINDEX,
+				.type = FSB_EMCY_TYPE,
+				.permissions = FSB_EMCY_PERMISSIONS,
 				.data_ptr = &dev.fsb.emcy
+		},
+		{
+				.main_index = CSB_FSB_INDEX_OFFSET + FSB_DOORSW1_INDEX,
+				.sub_index = FSB_DOORSW1_SUBINDEX,
+				.type = FSB_DOORSW1_TYPE,
+				.permissions = FSB_DOORSW1_PERMISSIONS,
+				.data_ptr = &dev.fsb.door_sw1
+		},
+		{
+				.main_index = CSB_FSB_INDEX_OFFSET + FSB_DOORSW2_INDEX,
+				.sub_index = FSB_DOORSW2_SUBINDEX,
+				.type = FSB_DOORSW2_TYPE,
+				.permissions = FSB_DOORSW2_PERMISSIONS,
+				.data_ptr = &dev.fsb.door_sw2
 		}
 
 };
@@ -235,8 +256,9 @@ const uv_command_st terminal_commands[] = {
 				.id = CMD_WIPER,
 				.str = "wiper",
 				.instructions = "Sets the wiper speed. Can also be used to set \n"
-						"the wiper home position polarity.\n"
-						"Usage: wiper (\"pol\"/0...100) (polarity)",
+						"the wiper home position polarity, or set wiper to be working as an\n"
+						"manual wiper.\n"
+						"Usage: wiper (\"pol\"/\"man\"/0...100) (value)",
 				.callback = &wiper_callb
 		},
 		{
@@ -331,13 +353,18 @@ void wiper_callb(void *me, unsigned int cmd, unsigned int args, argument_st *arg
 					}
 				}
 			}
+			else if (strcmp(argv[0].str, "man") == 0) {
+				if (args >= 2) {
+					this->wiper_manual = argv[1].number ? true : false;
+				}
+			}
 			else {
 				printf("Unknown wiper command '%s'\n", argv[0].str);
 			}
 		}
 	}
-	printf("wiper state: %u, current: %i, speed: %u polarity: %u\n", this->wiper.state,
-			(unsigned int) this->wiper.current, this->wiper_speed, this->wiper_pol);
+	printf("wiper state: %u, current: %i, speed: %u polarity: %u manual: %u\n", this->wiper.state,
+			(unsigned int) this->wiper.current, this->wiper_speed, this->wiper_pol, this->wiper_manual);
 }
 
 void cooler_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv) {
@@ -367,13 +394,11 @@ void stat_callb(void *me, unsigned int cmd, unsigned int args, argument_st *argv
 	stat_output(&this->beacon, "Beacon");
 	stat_output(&this->cooler, "Cooler");
 	stat_output(&this->wiper, "Wiper");
-	printf("Oil temp: %i, oil cooler hysteresis output: %u\n",
-			this->esb.oil_temp, uv_hysteresis_get_output(&this->oil_temp));
 
 	printf("Wiper speed: %i\nWiper pos: %u\nCooler P: %i\n"
-			"Beacon enabled: %i\nESB oil temp: %i\nFSB emcy: %u\n",
+			"Beacon enabled: %i\nESB \n",
 			this->wiper_speed, uv_gpio_get(WIPER_SENSOR_IO),
-			this->cooler_p, this->beacon_enabled, this->esb.oil_temp, this->fsb.emcy);
+			this->cooler_p, this->beacon_enabled);
 }
 
 
