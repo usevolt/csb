@@ -206,6 +206,13 @@ canopen_object_st obj_dict[] = {
 				.type = FSB_DOORSW2_TYPE,
 				.permissions = FSB_DOORSW2_PERMISSIONS,
 				.data_ptr = &dev.fsb.door_sw2
+		},
+		{
+				.main_index = CSB_FSB_INDEX_OFFSET + FSB_SEATSW_INDEX,
+				.sub_index = FSB_SEATSW_SUBINDEX,
+				.type = FSB_SEATSW_TYPE,
+				.permissions = FSB_SEATSW_PERMISSIONS,
+				.data_ptr = &dev.fsb.seat_sw
 		}
 
 };
