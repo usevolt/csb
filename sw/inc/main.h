@@ -41,7 +41,7 @@
 #define WIPER_ON_DELAY_MS				300
 #define WIPER_HOME_STATE				0
 #define WIPER_MANUAL_DEF				0
-#define WIPER_REQ_DELAY_MS				1500
+#define WIPER_REQ_DELAY_MS				500
 
 
 #define IGNKEY_DELAY_MS					10000
@@ -67,6 +67,7 @@ typedef struct _dev_st {
 
 	uint8_t wiper_speed;
 	int8_t wiper_req;
+	int8_t last_wiper_req;
 	uv_delay_st wiper_req_delay;
 	uint8_t last_wiper_speed;
 	uv_delay_st wiper_delay;

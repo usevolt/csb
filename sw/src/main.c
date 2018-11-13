@@ -45,6 +45,7 @@ void init(dev_st* me) {
 	this->wiper_state = WIPER_STATE_OFF;
 	this->wiper_speed = 0;
 	this->wiper_req = 0;
+	this->last_wiper_req = 0;
 	uv_delay_init(&this->wiper_req_delay, WIPER_REQ_DELAY_MS);
 	this->last_wiper_speed = this->wiper_speed;
 	this->cooler_p = 0;
@@ -139,8 +140,7 @@ void step(void* me) {
 		// ** wiper logic **
 		if (this->wiper_manual) {
 			// manual wiper works just as is
-			if (this->wiper_req) {
-				this->wiper_req = 0;
+			if (this->wiper_req && !this->last_wiper_req) {
 				if (this->wiper_speed) {
 					this->wiper_speed = 0;
 				}
@@ -157,18 +157,27 @@ void step(void* me) {
 			}
 			// wiper speed request handling
 			uv_delay(&this->wiper_req_delay, step_ms);
-			if (this->wiper_req) {
+			if (this->wiper_req && !this->last_wiper_req) {
 				// user has made a wiper request. Wiper request either swings
-				// wiper once or increases the wiper speed if pressed more than
+				// wiper once or increases / decreases the wiper speed if pressed more than
 				// once within the time delay.
-				this->wiper_req = 0;
 				uv_canopen_pdo_mapping_update(CSB_WIPER_SPEED_INDEX, CSB_WIPER_SPEED_SUBINDEX);
-				if ((this->wiper_speed >= (CSB_WIPER_MAX_SPEED - (CSB_WIPER_MAX_SPEED % 4))) ||
-						!uv_delay_has_ended(&this->wiper_req_delay)) {
-					// increase wiper speed
-					this->wiper_speed = this->wiper_speed + CSB_WIPER_MAX_SPEED / 4;
-					if (this->wiper_speed > CSB_WIPER_MAX_SPEED) {
-						this->wiper_speed = 0;
+				if (!uv_delay_has_ended(&this->wiper_req_delay)) {
+					if (this->wiper_req > 0) {
+						// increase wiper speed
+						this->wiper_speed = this->wiper_speed + CSB_WIPER_MAX_SPEED / 4;
+						if (this->wiper_speed > CSB_WIPER_MAX_SPEED) {
+							this->wiper_speed = CSB_WIPER_MAX_SPEED;
+						}
+					}
+					else {
+						// decrease wiper speed
+						if (this->wiper_speed >= CSB_WIPER_MAX_SPEED / 4) {
+							this->wiper_speed = this->wiper_speed - CSB_WIPER_MAX_SPEED / 4;
+						}
+						else {
+							this->wiper_speed = 0;
+						}
 					}
 				}
 				else {
@@ -237,6 +246,7 @@ void step(void* me) {
 
 			last_wiper = uv_gpio_get(WIPER_SENSOR_IO);
 		}
+		this->last_wiper_req = this->wiper_req;
 
 
 		// cooler P
