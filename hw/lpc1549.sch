@@ -235,22 +235,22 @@ F 7 "MULTICOMP" H 8469 3639 60  0001 C CNN "Manufacturer"
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4400 4300 4400 4800
+	4400 4300 4400 4400
 Wire Wire Line
-	4400 4400 4600 4400
+	4400 4400 4500 4400
 Wire Wire Line
 	4600 4300 4500 4300
 Wire Wire Line
 	4500 4300 4500 4400
 Connection ~ 4500 4400
 Wire Wire Line
-	2650 4000 4600 4000
+	2650 4000 3000 4000
 Connection ~ 4400 4000
 Connection ~ 4050 4000
 Connection ~ 3700 4000
 Connection ~ 3350 4000
 Wire Wire Line
-	2650 4300 4400 4300
+	2650 4300 3000 4300
 Connection ~ 3350 4300
 Connection ~ 3700 4300
 Connection ~ 4050 4300
@@ -288,9 +288,9 @@ Wire Wire Line
 	4600 3450 4400 3450
 Connection ~ 4400 3450
 Wire Wire Line
-	4400 3350 4400 4000
+	4400 3350 4400 3450
 Wire Wire Line
-	6500 2950 6850 2950
+	6500 2950 6650 2950
 Wire Wire Line
 	6500 2950 6500 2850
 Wire Wire Line
@@ -301,12 +301,12 @@ Wire Wire Line
 Wire Wire Line
 	6500 2750 6500 2650
 Wire Wire Line
-	6500 2650 6850 2650
+	6500 2650 6650 2650
 Connection ~ 6650 2650
 Wire Wire Line
 	7150 2650 7400 2650
 Wire Wire Line
-	7400 2650 7400 3000
+	7400 2650 7400 2950
 Wire Wire Line
 	7400 2950 7150 2950
 Connection ~ 7400 2950
@@ -319,11 +319,11 @@ Wire Wire Line
 Wire Wire Line
 	7000 5050 6400 5050
 Wire Wire Line
-	8050 3850 8750 3850
+	8050 3850 8400 3850
 Wire Wire Line
-	6400 3650 8750 3650
+	6400 3650 8150 3650
 Wire Wire Line
-	8600 3750 8600 4400
+	8600 3750 8600 3950
 Wire Wire Line
 	8600 3950 8750 3950
 Wire Wire Line
@@ -342,7 +342,7 @@ Wire Wire Line
 	8400 3700 8400 3850
 Connection ~ 8400 3850
 Wire Wire Line
-	8150 3350 8650 3350
+	8150 3350 8400 3350
 Wire Wire Line
 	8400 3400 8400 3350
 Connection ~ 8400 3350
@@ -377,7 +377,7 @@ F 7 "KEMET" H 10204 5909 60  0001 C CNN "Manufacturer"
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	9600 6000 10200 6000
+	9600 6000 9750 6000
 Wire Wire Line
 	10100 6000 10100 6150
 Connection ~ 10100 6000
@@ -450,44 +450,44 @@ Connection ~ 9750 6000
 $Comp
 L yageo:10K R301
 U 1 1 5957A035
-P 6600 2450
-F 0 "R301" H 6650 2634 45  0000 C CNN
-F 1 "10K" H 6650 2550 45  0000 C CNN
-F 2 "multicomp:0603" H 6630 2600 20  0001 C CNN
-F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 6569 2489 60  0001 C CNN
-F 4 "9330399" H 6969 2889 60  0001 C CNN "1st Source Part Number"
-F 5 "Farnell" H 6869 2789 60  0001 C CNN "1st Source"
-F 6 "MC0063W0603110K" H 6769 2689 60  0001 C CNN "Manufacturer Part Number"
-F 7 "MULTICOMP" H 6669 2589 60  0001 C CNN "Manufacturer"
-	1    6600 2450
-	1    0    0    1   
+P 4400 4950
+F 0 "R301" H 4450 5134 45  0000 C CNN
+F 1 "10K" H 4450 5050 45  0000 C CNN
+F 2 "multicomp:0603" H 4430 5100 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 4369 4989 60  0001 C CNN
+F 4 "9330399" H 4769 5389 60  0001 C CNN "1st Source Part Number"
+F 5 "Farnell" H 4669 5289 60  0001 C CNN "1st Source"
+F 6 "MC0063W0603110K" H 4569 5189 60  0001 C CNN "Manufacturer Part Number"
+F 7 "MULTICOMP" H 4469 5089 60  0001 C CNN "Manufacturer"
+	1    4400 4950
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	6500 2450 6400 2450
+	4500 4950 4600 4950
 Wire Wire Line
-	6800 2450 7350 2450
-Text HLabel 7350 2450 2    60   Input ~ 0
+	4200 4950 3650 4950
+Text HLabel 3650 4950 0    60   Input ~ 0
 WIPER_POS
 $Comp
 L yageo:10K R302
 U 1 1 5957B1E8
-P 6850 2550
-F 0 "R302" H 6900 2734 45  0000 C CNN
-F 1 "10K" H 6900 2650 45  0000 C CNN
-F 2 "multicomp:0603" H 6880 2700 20  0001 C CNN
-F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 6819 2589 60  0001 C CNN
-F 4 "9330399" H 7219 2989 60  0001 C CNN "1st Source Part Number"
-F 5 "Farnell" H 7119 2889 60  0001 C CNN "1st Source"
-F 6 "MC0063W0603110K" H 7019 2789 60  0001 C CNN "Manufacturer Part Number"
-F 7 "MULTICOMP" H 6919 2689 60  0001 C CNN "Manufacturer"
-	1    6850 2550
-	1    0    0    1   
+P 4150 5050
+F 0 "R302" H 4200 5234 45  0000 C CNN
+F 1 "10K" H 4200 5150 45  0000 C CNN
+F 2 "multicomp:0603" H 4180 5200 20  0001 C CNN
+F 3 "http://www.farnell.com/datasheets/1788326.pdf?_ga=1.214208087.1948984246.1460023966" H 4119 5089 60  0001 C CNN
+F 4 "9330399" H 4519 5489 60  0001 C CNN "1st Source Part Number"
+F 5 "Farnell" H 4419 5389 60  0001 C CNN "1st Source"
+F 6 "MC0063W0603110K" H 4319 5289 60  0001 C CNN "Manufacturer Part Number"
+F 7 "MULTICOMP" H 4219 5189 60  0001 C CNN "Manufacturer"
+	1    4150 5050
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	6750 2550 6400 2550
+	4250 5050 4600 5050
 Wire Wire Line
-	7050 2550 7350 2550
-Text HLabel 7350 2550 2    60   Input ~ 0
+	3950 5050 3650 5050
+Text HLabel 3650 5050 0    60   Input ~ 0
 COOLER_P
 Wire Wire Line
 	4600 2650 3950 2650
@@ -546,7 +546,7 @@ WIPER_SENSE
 Text HLabel 7350 2050 2    60   Input ~ 0
 COOLER_SENSE
 Wire Wire Line
-	9600 5700 10200 5700
+	9600 5700 10100 5700
 $Comp
 L power:+5V #PWR0307
 U 1 1 595E0BE4
@@ -599,4 +599,62 @@ F 9 "MICROCHIP" H 9450 6100 60  0001 C CNN "Manufacturer"
 	1    9300 5800
 	-1   0    0    -1  
 $EndComp
+Wire Wire Line
+	4500 4400 4600 4400
+Wire Wire Line
+	4400 4000 4600 4000
+Wire Wire Line
+	4050 4000 4400 4000
+Wire Wire Line
+	3700 4000 4050 4000
+Wire Wire Line
+	3350 4000 3700 4000
+Wire Wire Line
+	3350 4300 3700 4300
+Wire Wire Line
+	3700 4300 4050 4300
+Wire Wire Line
+	4050 4300 4400 4300
+Wire Wire Line
+	4400 4400 4400 4500
+Wire Wire Line
+	4400 4500 4400 4600
+Wire Wire Line
+	4400 4600 4400 4700
+Wire Wire Line
+	4400 4700 4400 4800
+Wire Wire Line
+	4400 3900 4400 4000
+Wire Wire Line
+	4400 3800 4400 3900
+Wire Wire Line
+	4400 3700 4400 3800
+Wire Wire Line
+	4400 3600 4400 3700
+Wire Wire Line
+	4400 3450 4400 3600
+Wire Wire Line
+	6650 2950 6850 2950
+Wire Wire Line
+	6650 2650 6850 2650
+Wire Wire Line
+	7400 2950 7400 3000
+Wire Wire Line
+	8600 3950 8600 4400
+Wire Wire Line
+	8150 3650 8750 3650
+Wire Wire Line
+	8400 3850 8750 3850
+Wire Wire Line
+	8400 3350 8650 3350
+Wire Wire Line
+	10100 6000 10200 6000
+Wire Wire Line
+	3000 4300 3350 4300
+Wire Wire Line
+	3000 4000 3350 4000
+Wire Wire Line
+	9750 6000 10100 6000
+Wire Wire Line
+	10100 5700 10200 5700
 $EndSCHEMATC
