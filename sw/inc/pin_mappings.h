@@ -29,9 +29,9 @@
 #define IN_LIGHT_IO					P1_0
 #define DRIVE_LIGHT_IO				P0_7
 #define WIPER_IO					P0_31
-#define WIPER_SENSOR_IO				P1_4
+#define WIPER_SENSOR_IO				P1_1
 #define COOLER_IO					P0_13
-#define COOLER_P_IO					P1_5
+#define COOLER_P_IO					P0_9
 
 
 
