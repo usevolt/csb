@@ -514,8 +514,8 @@ Wire Wire Line
 Text HLabel 3950 2250 0    60   Output ~ 0
 WIPER
 Wire Wire Line
-	6400 5650 7350 5650
-Text HLabel 7350 5650 2    60   Output ~ 0
+	6400 1950 7350 1950
+Text HLabel 7350 1950 2    60   Output ~ 0
 COOLER
 Wire Wire Line
 	6400 2050 7350 2050
