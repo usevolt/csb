@@ -14,7 +14,7 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 5800 4100 2    60   Output ~ 0
+Text HLabel 6700 4100 2    60   Output ~ 0
 OUT1
 Text HLabel 5800 4400 2    60   Output ~ 0
 OUT2
@@ -148,9 +148,9 @@ Wire Wire Line
 Wire Wire Line
 	5250 3900 5250 4000
 Wire Wire Line
-	5250 4100 5800 4100
+	5250 4100 6450 4100
 Wire Wire Line
-	5250 4400 5800 4400
+	5250 4400 5650 4400
 Wire Wire Line
 	3600 4300 3600 4850
 Wire Wire Line
@@ -272,4 +272,72 @@ Wire Wire Line
 Wire Wire Line
 	3600 3900 3750 3900
 Connection ~ 3600 3900
+$Comp
+L usevolt:DIODE_RS07J-GS18 D10
+U 1 1 5C5271C5
+P 5650 4700
+AR Path="/5A02A41F/5C5271C5" Ref="D10"  Part="1" 
+AR Path="/5A015FC0/5C5271C5" Ref="D8"  Part="1" 
+F 0 "D10" V 5600 4602 45  0000 R CNN
+F 1 "DIODE_RS07J-GS18" H 5670 4640 45  0001 L BNN
+F 2 "usevolt:DO219AB" H 5680 4850 20  0001 C CNN
+F 3 "http://www.vishay.com/docs/85742/rs07b.pdf" H 5670 4720 60  0001 C CNN
+F 4 "1864882" H 6270 5320 60  0001 C CNN "2nd Source Part Number"
+F 5 "Digi-Key" H 5970 5020 60  0001 C CNN "1st Source"
+F 6 "Farnell" H 6170 5220 60  0001 C CNN "2nd Source"
+F 7 "RS07J-GS18" H 5870 4920 60  0001 C CNN "Manufacturer Part Number"
+F 8 "RS07J-GS18-ND" H 6070 5120 60  0001 C CNN "1st Source Part Number"
+F 9 "Vishay Semiconductor Diodes Division" H 5770 4820 60  0001 C CNN "Manufacturer"
+	1    5650 4700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L usevolt:DIODE_RS07J-GS18 D11
+U 1 1 5C52725E
+P 6450 4700
+AR Path="/5A02A41F/5C52725E" Ref="D11"  Part="1" 
+AR Path="/5A015FC0/5C52725E" Ref="D9"  Part="1" 
+F 0 "D11" V 6400 4602 45  0000 R CNN
+F 1 "DIODE_RS07J-GS18" H 6470 4640 45  0001 L BNN
+F 2 "usevolt:DO219AB" H 6480 4850 20  0001 C CNN
+F 3 "http://www.vishay.com/docs/85742/rs07b.pdf" H 6470 4720 60  0001 C CNN
+F 4 "1864882" H 7070 5320 60  0001 C CNN "2nd Source Part Number"
+F 5 "Digi-Key" H 6770 5020 60  0001 C CNN "1st Source"
+F 6 "Farnell" H 6970 5220 60  0001 C CNN "2nd Source"
+F 7 "RS07J-GS18" H 6670 4920 60  0001 C CNN "Manufacturer Part Number"
+F 8 "RS07J-GS18-ND" H 6870 5120 60  0001 C CNN "1st Source Part Number"
+F 9 "Vishay Semiconductor Diodes Division" H 6570 4820 60  0001 C CNN "Manufacturer"
+	1    6450 4700
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6450 4600 6450 4100
+Connection ~ 6450 4100
+Wire Wire Line
+	6450 4100 6700 4100
+Wire Wire Line
+	5650 4600 5650 4400
+Connection ~ 5650 4400
+Wire Wire Line
+	5650 4400 5800 4400
+Wire Wire Line
+	5650 4900 6050 4900
+$Comp
+L power:GND #PWR0111
+U 1 1 5C52902F
+P 6050 5100
+AR Path="/5A02A41F/5C52902F" Ref="#PWR0111"  Part="1" 
+AR Path="/5A015FC0/5C52902F" Ref="#PWR0110"  Part="1" 
+F 0 "#PWR0111" H 6050 4850 50  0001 C CNN
+F 1 "GND" H 6055 4927 50  0000 C CNN
+F 2 "" H 6050 5100 50  0000 C CNN
+F 3 "" H 6050 5100 50  0000 C CNN
+	1    6050 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 4900 6050 5100
+Connection ~ 6050 4900
+Wire Wire Line
+	6050 4900 6450 4900
 $EndSCHEMATC
