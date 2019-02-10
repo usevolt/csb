@@ -39,8 +39,9 @@
 
 #define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
-#define WIPER_HOME_STATE				0
-#define WIPER_REQ_DELAY_MS				1500
+#define WIPER_HOME_STATE				1
+#define WIPER_MANUAL_DEF				0
+#define WIPER_REQ_DELAY_MS				10000
 
 
 
