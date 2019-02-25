@@ -21,7 +21,7 @@ dev_st dev;
 
 
 #define VND5050_CURRENT_AMPL_UA		4173
-#define VN5E01_CURRENT_AMPL_UA		13923
+#define VN5E01_CURRENT_AMPL_UA		5600
 
 
 
@@ -115,6 +115,9 @@ void step(void* me) {
 		uv_output_step(&this->beacon, step_ms);
 		uv_output_step(&this->wiper, step_ms);
 		uv_output_step(&this->cooler, step_ms);
+
+//		printf("%i 0x%x 0x%x\n", uv_output_get_current(&this->cooler),
+//				this->cooler.limit_fault, uv_adc_read(this->cooler.adc_chn));
 
 		// cooler is always on unless there's a fault
 		if (uv_output_get_state(&this->cooler) == OUTPUT_STATE_OFF) {
