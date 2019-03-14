@@ -32,7 +32,7 @@ void init(dev_st* me) {
 	uv_terminal_init(terminal_commands, commands_size());
 
 	// load non-volatile data
-	if (uv_memory_load()) {
+	if (uv_memory_load(MEMORY_APP_PARAMS)) {
 		// initialize default settings
 		this->beacon_enabled = 0;
 		this->wiper_pol = WIPER_HOME_STATE;
