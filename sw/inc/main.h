@@ -37,6 +37,7 @@
 #define OILCOOLER_MAX_CURRENT_MA		20000
 #define OILCOOLER_FAULT_CURRENT_MA		25000
 
+#define WIPER_MODE_DELAY				1
 #define WIPER_SLOWEST_DELAY_MS			10000
 #define WIPER_ON_DELAY_MS				300
 #define WIPER_HOME_STATE				0
@@ -64,7 +65,7 @@ typedef struct _dev_st {
 	uv_output_st wiper;
 	uv_output_st cooler;
 
-
+	uv_delay_st wiper_mode_delay;
 	uint8_t wiper_speed;
 	int8_t wiper_req;
 	int8_t last_wiper_req;
