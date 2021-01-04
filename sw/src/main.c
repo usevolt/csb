@@ -296,6 +296,16 @@ void step(void* me) {
 			uv_delay_init(&this->ignkey_delay, IGNKEY_DELAY_MS);
 		}
 
+		if (this->fsb.ignkey == FSB_IGNKEY_STATE_START ||
+				this->fsb.ignkey == FSB_IGNKEY_STATE_PREHEAT) {
+			uv_output_disable(&this->work_light);
+			uv_output_disable(&this->drive_light);
+		}
+		else {
+			uv_output_enable(&this->work_light);
+			uv_output_enable(&this->drive_light);
+		}
+
 		uv_rtos_task_delay(step_ms);
 
 	}
